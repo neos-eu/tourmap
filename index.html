@@ -60,10 +60,11 @@ of your party.
             zoom: 8
         });
 
+        //                                                                                                              CONTROLS
+        /*
         // Create a div to hold the control.
         var controlDiv = document.createElement('div');
 
-// Set CSS for the control border
         var controlUI = document.createElement('div');
         controlUI.style.backgroundColor = '#fff';
         controlUI.style.border = '2px solid #fff';
@@ -74,7 +75,6 @@ of your party.
         controlUI.title = 'Click to recenter the map';
         controlDiv.appendChild(controlUI);
 
-// Set CSS for the control interior
         var controlText = document.createElement('div');
         controlText.style.color = 'rgb(25,25,25)';
         controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
@@ -85,19 +85,11 @@ of your party.
         controlText.innerHTML = 'Center Map';
         controlUI.appendChild(controlText);
 
-        //var myControl = new MyControl(controlDiv);
-
-// We don't really need to set an index value here, but
-// this would be how you do it. Note that we set this
-// value as a property of the DIV itself.
         controlDiv.index = 1;
-
-// Add the control to the map at a designated control position
-// by pushing it on the position's array. This code will
-// implicitly add the control to the DOM, through the Map
-// object. You should not attach the control manually.
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv);
+        /**/
 
+        //                                                                                                              STYLES
         var styles = [
 
             {
