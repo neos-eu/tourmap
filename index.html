@@ -50,6 +50,13 @@ of your party.
 <body>
 <div id="map"></div>
 <script>
+
+    var imagePathPrefix = "";
+    var imagePathStrolz1 = imagePathPrefix + "strolz1.png";
+    var imagePathStrolz2 = imagePathPrefix + "strolz2.png";
+    var imagePathGriss1 = imagePathPrefix + "griss1.png";
+    var imagePathGrissStrolz = imagePathPrefix + "grissstrolz.png";
+
     var map;
     function initMap() {
 
@@ -547,36 +554,44 @@ of your party.
             title: "Wien",
             position: {lat: 48.2081743, lng: 16.3738189},
             html: '<div class="map-box"><h2>Mat legt los</h2><p>36 Stunden durch ganz Österreich und du bist live dabei.</p><a href="https://neos.eu">Zur Challenge</a></div>'
+            ,
+            image: imagePathGrissStrolz
         };
         var position_dornbirn = { // Challenge
             title: "Dornbirn",
             position: {lat: 47.4124, lng: 9.74379},
-            html: '<p>test2</p>'
+            html: '<p>test2</p>',
+            image: imagePathStrolz1
         };
         var position_innsbruck = { // challenge 2
             title: "Innsbruck",
             position: {lat: 47.2692124, lng: 11.404102400000056},
-            html: '<p>test5</p>'
+            html: '<p>test5</p>',
+            image: imagePathStrolz2
         };
         var position_salzburg = {
             title: "Salzburg",
             position: {lat: 47.80949, lng: 13.05501},
-            html: '<p>test3</p>'
+            html: '<p>test3</p>',
+            image: imagePathGrissStrolz
         };
         var position_linz = { // challenge 3
             title: "Linz",
             position: {lat: 48.30694, lng: 14.285830000000033},
-            html: '<p>test5</p>'
+            html: '<p>test5</p>',
+            image: imagePathGrissStrolz
         };
         var position_graz = {
             title: "Graz",
             position: {lat: 47.070714, lng: 15.439503999999943},
-            html: '<p>test4</p>'
+            html: '<p>test4</p>',
+            image: imagePathGriss1
         };
         var position_stpoelten = {
             title: "St. Pölten",
             position: {lat: 48.20353, lng: 15.63817},
-            html: '<p>test5</p>'
+            html: '<p>test5</p>',
+            image: imagePathGrissStrolz
         };
 
 
@@ -589,7 +604,8 @@ of your party.
             var marker= new google.maps.Marker({
                 position: positions[i].position,
                 map: map,
-                title: positions[i].title
+                //title: positions[i].title,
+                icon: positions[i].image
             });
 
 
