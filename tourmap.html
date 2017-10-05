@@ -23,6 +23,7 @@ of your party.
 4. Live-Videos
 5. Hashtagstream
 6. Styling
+7. Heatmap - https://developers.google.com/maps/documentation/javascript/heatmaplayer
 
 
 -->
@@ -59,6 +60,44 @@ of your party.
             zoom: 8
         });
 
+        // Create a div to hold the control.
+        var controlDiv = document.createElement('div');
+
+// Set CSS for the control border
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.textAlign = 'center';
+        controlUI.style.height = "100vh";
+        controlUI.title = 'Click to recenter the map';
+        controlDiv.appendChild(controlUI);
+
+// Set CSS for the control interior
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '16px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = 'Center Map';
+        controlUI.appendChild(controlText);
+
+        //var myControl = new MyControl(controlDiv);
+
+// We don't really need to set an index value here, but
+// this would be how you do it. Note that we set this
+// value as a property of the DIV itself.
+        controlDiv.index = 1;
+
+// Add the control to the map at a designated control position
+// by pushing it on the position's array. This code will
+// implicitly add the control to the DOM, through the Map
+// object. You should not attach the control manually.
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv);
+
         var styles = [
             /*{
                 "featureType": "all",
@@ -82,7 +121,7 @@ of your party.
 
 
         var geocoder = new google.maps.Geocoder();
-        var address = "St. Pölten";
+        var address = "Linz";
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === 'OK') {
                 var foo = results[0].geometry.location;
@@ -103,15 +142,25 @@ of your party.
             position: {lat: 48.2081743, lng: 16.3738189},
             html: '<div class="map-box"><h2>Mat legt los</h2><p>36 Stunden durch ganz Österreich und du bist live dabei.</p><a href="https://neos.eu">Zur Challenge</a></div>'
         };
-        var position_dornbirn = {
+        var position_dornbirn = { // Challenge
             title: "Dornbirn",
             position: {lat: 47.4124, lng: 9.74379},
             html: '<p>test2</p>'
+        };
+        var position_innsbruck = { // challenge 2
+            title: "Innsbruck",
+            position: {lat: 47.2692124, lng: 11.404102400000056},
+            html: '<p>test5</p>'
         };
         var position_salzburg = {
             title: "Salzburg",
             position: {lat: 47.80949, lng: 13.05501},
             html: '<p>test3</p>'
+        };
+        var position_linz = { // challenge 3
+            title: "Linz",
+            position: {lat: 48.30694, lng: 14.285830000000033},
+            html: '<p>test5</p>'
         };
         var position_graz = {
             title: "Graz",
@@ -124,7 +173,8 @@ of your party.
             html: '<p>test5</p>'
         };
 
-        var positions = [position_wien, position_dornbirn, position_salzburg, position_graz, position_stpoelten];
+
+        var positions = [position_dornbirn, position_salzburg, position_graz, position_stpoelten, position_innsbruck, position_linz, position_wien];
 
 
 
@@ -152,49 +202,54 @@ of your party.
 
 
         // Routing
-
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer({map: map});
 /*
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay1 = new google.maps.DirectionsRenderer({map: map});
+        var directionsDisplay2 = new google.maps.DirectionsRenderer({map: map});
+        var directionsDisplay3 = new google.maps.DirectionsRenderer({map: map});
+        var directionsDisplay4 = new google.maps.DirectionsRenderer({map: map});
+        var directionsDisplay5 = new google.maps.DirectionsRenderer({map: map});
+        var directionsDisplay6 = new google.maps.DirectionsRenderer({map: map});
+
         // Display the route between the initial start and end selections.
         window.setTimeout(function(){
             calculateAndDisplayRoute(
-                    directionsDisplay, "Wien, Österreich", "Dornbirn, Österreich");
+                    directionsDisplay1, "Wien, Österreich", "Dornbirn, Österreich");
 
         }, 1000);
 
         window.setTimeout(function(){
 
             calculateAndDisplayRoute(
-                    directionsDisplay, "Dornbirn, Österreich", "Innsbruck, Österreich");
+                    directionsDisplay2, "Dornbirn, Österreich", "Innsbruck, Österreich");
 
         }, 2000);
         window.setTimeout(function(){
 
             calculateAndDisplayRoute(
-                    directionsDisplay, "Innsbruck, Österreich", "Salzburg, Österreich");
+                    directionsDisplay3, "Innsbruck, Österreich", "Salzburg, Österreich");
 
         }, 3000);
         window.setTimeout(function(){
 
             calculateAndDisplayRoute(
-                    directionsDisplay, "Salzburg, Österreich", "Linz, Österreich");
+                    directionsDisplay4, "Salzburg, Österreich", "Linz, Österreich");
 
         }, 4000);
         window.setTimeout(function(){
 
             calculateAndDisplayRoute(
-                    directionsDisplay, "Linz, Österreich", "Wien, Österreich");
+                    directionsDisplay5, "Linz, Österreich", "Wien, Österreich");
 
         }, 5000);
 
         window.setTimeout(function(){
 
             calculateAndDisplayRoute(
-                    directionsDisplay, "Graz, Österreich", "Salzburg, Österreich");
+                    directionsDisplay6, "Graz, Österreich", "Salzburg, Österreich");
 
         }, 6000);
-*/
+
 
 
         function calculateAndDisplayRoute(directionsDisplay, origin, destination, waypoints) {
@@ -235,6 +290,8 @@ of your party.
                 marker.setPosition(myRoute.steps[i].start_location);
             }
         }
+
+        */
     }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBa-LkwNN3X8Iz9DR948QSa1k1qNzWtYS8&callback=initMap"
