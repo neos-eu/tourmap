@@ -99,22 +99,436 @@ of your party.
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlDiv);
 
         var styles = [
-            /*{
-                "featureType": "all",
-                "stylers": [
-                    { "color": "#C0C0C0" }
-                ]
-            },*/
+
             {
-                featureType: "transit",
-                elements: "all",
-                stylers: [
+                "featureType": "administrative",
+                "elementType": "labels.text.fill",
+                "stylers": [
                     {
-                        //visibility: "off",
-                        color: "#e84188"
+                        "color": "#E84188"
+                    }
+                ]
+            },
+            {
+                "featureType": "administrative.land_parcel",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "saturation": "12"
+                    }
+                ]
+            },
+
+            {
+                "featureType": "landscape.man_made",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "color": "#E8E8E8"
+                    }
+                ]
+            },
+            {
+                "featureType": "landscape.natural",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "color": "#f2f2f2"
+                    }
+                ]
+            },
+
+            {
+                "featureType": "poi",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.attraction",
+                "elementType": "geometry.fill",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    },
+                    {
+                        "color": "#000000"
+                    },
+                ]
+            },
+            {
+                "featureType": "poi.attraction",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "color": "#8F8F8F"
+                    },
+                ]
+            },
+            {
+                "featureType": "poi.attraction",
+                "elementType": "labels.text.stroke",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.business",
+                "elementType": "labels.text",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "color": "#000000"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.business",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "color": "#000000"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.business",
+                "elementType": "labels.text.stroke",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.government",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "saturation": "-100"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.medical",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "saturation": "-100"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.park",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "saturation": "-65"
+                    },
+                    {
+                        "lightness": "30"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.place_of_worship",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.place_of_worship",
+                "elementType": "labels.text",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.place_of_worship",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "color": "#8F8F8F"
+                    }
+
+                ]
+            },
+            {
+                "featureType": "poi.place_of_worship",
+                "elementType": "labels.text.stroke",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    }
+
+                ]
+            },
+            {
+                "featureType": "poi.place_of_worship",
+                "elementType": "labels.icon",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.school",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "saturation": "-100"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.sports_complex",
+                "elementType": "geometry.fill",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "saturation": "-100"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.sports_complex",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "color": "#8F8F8F"
+                    }
+                ]
+            },
+            {
+                "featureType": "poi.sports_complex",
+                "elementType": "labels.text.stroke",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "road",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "saturation": -100
+                    },
+                    {
+                        "lightness": 45
+                    }
+                ]
+            },
+            {
+                "featureType": "road",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "color": "#8F8F8F"
+                    }
+                ]
+            },
+            {
+                "featureType": "road.highway",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "simplified"
+                    }
+                ]
+            },
+            {
+                "featureType": "road.arterial",
+                "elementType": "labels.icon",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "transit",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "transit.line",
+                "elementType": "geometry.fill",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "weight": "1"
+                    }
+                ]
+            },
+            {
+                "featureType": "transit.station.airport",
+                "elementType": "geometry",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    }
+                ]
+            },
+            {
+                "featureType": "transit.station.rail",
+                "elementType": "geometry.fill",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "color": "#ff0000"
+                    },
+                    {
+                        "weight": "1"
+                    }
+                ]
+            },
+            {
+                "featureType": "transit.station.rail",
+                "elementType": "labels.text",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "hue": "#ff0000"
+                    }
+                ]
+            },
+            {
+                "featureType": "transit.station.rail",
+                "elementType": "labels.icon",
+                "stylers": [
+                    {
+                        "visibility": "off"
+                    }
+                ]
+            },
+            {
+                "featureType": "water",
+                "elementType": "all",
+                "stylers": [
+                    {
+                        "color": "#d4e4eb"
+                    },
+                    {
+                        "visibility": "on"
+                    }
+                ]
+            },
+            {
+                "featureType": "water",
+                "elementType": "geometry.fill",
+                "stylers": [
+                    {
+                        "visibility": "on"
+                    },
+                    {
+                        "color": "#cbdae2"
+                    }
+                ]
+            },
+            {
+                "featureType": "water",
+                "elementType": "labels.text.fill",
+                "stylers": [
+                    {
+                        "color": "#9b7f7f"
+                    }
+                ]
+            },
+            {
+                "featureType": "water",
+                "elementType": "labels.text.stroke",
+                "stylers": [
+                    {
+                        "color": "#dfc9c9"
                     }
                 ]
             }
+            /*{
+             "stylers": [
+             {
+             "hue": "#ff61a6"
+             },
+             {
+             "visibility": "on"
+             },
+             {
+             "invert_lightness": true
+             },
+             {
+             "saturation": 40
+             },
+             {
+             "lightness": 10
+             }
+             ]
+             },*/
+            /*{
+             "featureType": "all",
+             "stylers": [
+             { "color": "#C0C0C0" }
+             ]
+             },*/
+            /* {
+             featureType: "transit",
+             elements: "all",
+             stylers: [
+             {
+             //visibility: "off",
+             color: "#e84188"
+             }
+             ]
+             },*/
         ];
 
         map.setOptions({styles: styles});
@@ -190,108 +604,108 @@ of your party.
 
             var infowindow = new google.maps.InfoWindow({content:positions[i].html});
             infowindow.open(map, marker);
-/*
-            marker.addListener('click', function() {
-                this.infowindow = new google.maps.InfoWindow({content:this.content});
-                this.infowindow.open(map, this);
-            });
-            */
+            /*
+             marker.addListener('click', function() {
+             this.infowindow = new google.maps.InfoWindow({content:this.content});
+             this.infowindow.open(map, this);
+             });
+             */
 
             markers[i] = marker;
         }
 
 
         // Routing
-/*
-        var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay1 = new google.maps.DirectionsRenderer({map: map});
-        var directionsDisplay2 = new google.maps.DirectionsRenderer({map: map});
-        var directionsDisplay3 = new google.maps.DirectionsRenderer({map: map});
-        var directionsDisplay4 = new google.maps.DirectionsRenderer({map: map});
-        var directionsDisplay5 = new google.maps.DirectionsRenderer({map: map});
-        var directionsDisplay6 = new google.maps.DirectionsRenderer({map: map});
+        /*
+         var directionsService = new google.maps.DirectionsService;
+         var directionsDisplay1 = new google.maps.DirectionsRenderer({map: map});
+         var directionsDisplay2 = new google.maps.DirectionsRenderer({map: map});
+         var directionsDisplay3 = new google.maps.DirectionsRenderer({map: map});
+         var directionsDisplay4 = new google.maps.DirectionsRenderer({map: map});
+         var directionsDisplay5 = new google.maps.DirectionsRenderer({map: map});
+         var directionsDisplay6 = new google.maps.DirectionsRenderer({map: map});
 
-        // Display the route between the initial start and end selections.
-        window.setTimeout(function(){
-            calculateAndDisplayRoute(
-                    directionsDisplay1, "Wien, Österreich", "Dornbirn, Österreich");
+         // Display the route between the initial start and end selections.
+         window.setTimeout(function(){
+         calculateAndDisplayRoute(
+         directionsDisplay1, "Wien, Österreich", "Dornbirn, Österreich");
 
-        }, 1000);
+         }, 1000);
 
-        window.setTimeout(function(){
+         window.setTimeout(function(){
 
-            calculateAndDisplayRoute(
-                    directionsDisplay2, "Dornbirn, Österreich", "Innsbruck, Österreich");
+         calculateAndDisplayRoute(
+         directionsDisplay2, "Dornbirn, Österreich", "Innsbruck, Österreich");
 
-        }, 2000);
-        window.setTimeout(function(){
+         }, 2000);
+         window.setTimeout(function(){
 
-            calculateAndDisplayRoute(
-                    directionsDisplay3, "Innsbruck, Österreich", "Salzburg, Österreich");
+         calculateAndDisplayRoute(
+         directionsDisplay3, "Innsbruck, Österreich", "Salzburg, Österreich");
 
-        }, 3000);
-        window.setTimeout(function(){
+         }, 3000);
+         window.setTimeout(function(){
 
-            calculateAndDisplayRoute(
-                    directionsDisplay4, "Salzburg, Österreich", "Linz, Österreich");
+         calculateAndDisplayRoute(
+         directionsDisplay4, "Salzburg, Österreich", "Linz, Österreich");
 
-        }, 4000);
-        window.setTimeout(function(){
+         }, 4000);
+         window.setTimeout(function(){
 
-            calculateAndDisplayRoute(
-                    directionsDisplay5, "Linz, Österreich", "Wien, Österreich");
+         calculateAndDisplayRoute(
+         directionsDisplay5, "Linz, Österreich", "Wien, Österreich");
 
-        }, 5000);
+         }, 5000);
 
-        window.setTimeout(function(){
+         window.setTimeout(function(){
 
-            calculateAndDisplayRoute(
-                    directionsDisplay6, "Graz, Österreich", "Salzburg, Österreich");
+         calculateAndDisplayRoute(
+         directionsDisplay6, "Graz, Österreich", "Salzburg, Österreich");
 
-        }, 6000);
+         }, 6000);
 
 
 
-        function calculateAndDisplayRoute(directionsDisplay, origin, destination, waypoints) {
-            // First, remove any existing markers from the map.
-            for (var i = 0; i < markerArray.length; i++) {
-                markerArray[i].setMap(null);
-            }
+         function calculateAndDisplayRoute(directionsDisplay, origin, destination, waypoints) {
+         // First, remove any existing markers from the map.
+         for (var i = 0; i < markerArray.length; i++) {
+         markerArray[i].setMap(null);
+         }
 
-            // Retrieve the start and end locations and create a DirectionsRequest using
-            // WALKING directions.
-            directionsService.route({
-                origin: origin,
-                destination: destination,
-                waypoints: waypoints,
-                travelMode: 'TRANSIT',
-                transitOptions: {modes:["RAIL"]}
-            }, function(response, status) {
-                // Route the directions and pass the response to a function to create
-                // markers for each step.
-                if (status === 'OK') {
-                    response.routes[0].legs[0].steps[0].transit = null;
-                    directionsDisplay.setDirections(response);
-                    showSteps(response, markerArray, map);
-                } else {
-                    window.alert('Directions request failed due to ' + status);
-                }
-            });
-        }
+         // Retrieve the start and end locations and create a DirectionsRequest using
+         // WALKING directions.
+         directionsService.route({
+         origin: origin,
+         destination: destination,
+         waypoints: waypoints,
+         travelMode: 'TRANSIT',
+         transitOptions: {modes:["RAIL"]}
+         }, function(response, status) {
+         // Route the directions and pass the response to a function to create
+         // markers for each step.
+         if (status === 'OK') {
+         response.routes[0].legs[0].steps[0].transit = null;
+         directionsDisplay.setDirections(response);
+         showSteps(response, markerArray, map);
+         } else {
+         window.alert('Directions request failed due to ' + status);
+         }
+         });
+         }
 
-        function showSteps(directionResult, markerArray, map) {
-            // For each step, place a marker, and add the text to the marker's infowindow.
-            // Also attach the marker to an array so we can keep track of it and remove it
-            // when calculating new routes.
-            var myRoute = directionResult.routes[0].legs[0];
-            for (var i = 0; i < myRoute.steps.length; i++) {
-                var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
-                marker.setMap(map);
-                marker.setPosition(myRoute.steps[i].start_location);
-            }
-        }
+         function showSteps(directionResult, markerArray, map) {
+         // For each step, place a marker, and add the text to the marker's infowindow.
+         // Also attach the marker to an array so we can keep track of it and remove it
+         // when calculating new routes.
+         var myRoute = directionResult.routes[0].legs[0];
+         for (var i = 0; i < myRoute.steps.length; i++) {
+         var marker = markerArray[i] = markerArray[i] || new google.maps.Marker;
+         marker.setMap(map);
+         marker.setPosition(myRoute.steps[i].start_location);
+         }
+         }
 
-        */
+         */
     }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBa-LkwNN3X8Iz9DR948QSa1k1qNzWtYS8&callback=initMap"
