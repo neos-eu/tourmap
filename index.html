@@ -532,7 +532,7 @@ of your party.
 
         map.setOptions({styles: styles});
 
-
+/*
         var geocoder = new google.maps.Geocoder();
         var address = "Linz";
         geocoder.geocode({'address': address}, function(results, status) {
@@ -548,50 +548,52 @@ of your party.
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }
-        });
+        });*/
+
+
 
         var position_wien = {
             title: "Wien",
             position: {lat: 48.2081743, lng: 16.3738189},
             html: '<div class="map-box"><h2>Mat legt los</h2><p>36 Stunden durch ganz Österreich und du bist live dabei.</p><a href="https://neos.eu">Zur Challenge</a></div>'
-            ,
-            image: imagePathGrissStrolz
+            //,
+            //image: imagePathGrissStrolz
         };
         var position_dornbirn = { // Challenge
             title: "Dornbirn",
             position: {lat: 47.4124, lng: 9.74379},
-            html: '<p>test2</p>',
-            image: imagePathStrolz1
+            html: '<p>test2</p>'
+            //, image: imagePathStrolz1
         };
         var position_innsbruck = { // challenge 2
             title: "Innsbruck",
             position: {lat: 47.2692124, lng: 11.404102400000056},
-            html: '<p>test5</p>',
-            image: imagePathStrolz2
+            html: '<p>test5</p>'
+            //, image: imagePathStrolz2
         };
         var position_salzburg = {
             title: "Salzburg",
             position: {lat: 47.80949, lng: 13.05501},
-            html: '<p>test3</p>',
-            image: imagePathGrissStrolz
+            html: '<p>test3</p>'
+            //, image: imagePathGrissStrolz
         };
         var position_linz = { // challenge 3
             title: "Linz",
             position: {lat: 48.30694, lng: 14.285830000000033},
-            html: '<p>test5</p>',
-            image: imagePathGrissStrolz
+            html: '<p>test5</p>'
+            //, image: imagePathGrissStrolz
         };
         var position_graz = {
             title: "Graz",
             position: {lat: 47.070714, lng: 15.439503999999943},
-            html: '<p>test4</p>',
-            image: imagePathGriss1
+            html: '<p>test4</p>'
+            //, image: imagePathGriss1
         };
         var position_stpoelten = {
             title: "St. Pölten",
             position: {lat: 48.20353, lng: 15.63817},
-            html: '<p>test5</p>',
-            image: imagePathGrissStrolz
+            html: '<p>test5</p>'
+            //, image: imagePathGrissStrolz
         };
 
 
@@ -623,6 +625,67 @@ of your party.
         }
 
 
+        var marker = new google.maps.Marker({
+            map: map,
+            position: position_wien.position,
+            icon: "grissstrolz.png"
+        });
+
+
+        var travelParts = [
+            {
+                source: position_wien,
+                target: position_dornbirn
+            },
+            {
+                source: position_dornbirn,
+                target: position_innsbruck
+            },
+            {
+                source: position_innsbruck,
+                target: position_salzburg
+            },
+            {
+                source: position_salzburg,
+                target: position_linz
+            },
+            {
+                source: position_linz,
+                target: position_wien
+            }
+        ];
+
+        for(var i = 0; i < travelParts.length; i++){
+            // store a LatLng for each step of the animation
+            var position_source = travelParts[i].source;
+            var position_target = travelParts[i].target;
+
+            var frames = [];
+            for (var percent = 0; percent < 1; percent += 0.01) {
+                var curLat = position_source.position.lat + percent * (position_target.position.lat - position_source.position.lat);
+                var curLng = position_source.position.lng + percent * (position_target.position.lng - position_source.position.lng);
+                frames.push(new google.maps.LatLng(curLat, curLng));
+            }
+            travelParts[i].frames = frames;
+        }
+
+        var move = function(marker, currentTravelPart, currentFrame, wait) {
+            marker.setPosition(travelParts[currentTravelPart].frames[currentFrame]);
+            if(currentFrame == travelParts[currentTravelPart].frames.length-1) {
+                currentTravelPart++;
+                if(currentTravelPart >= travelParts.length){
+                    currentTravelPart = 0;
+                }
+                currentFrame = 0;
+            }
+
+            setTimeout(function() {
+                move(marker, currentTravelPart, currentFrame+1, wait);
+            }, wait);
+        }
+
+        // begin animation, send back to origin after completion
+        move(marker, 0, 0, 20);
         // Routing
         /*
          var directionsService = new google.maps.DirectionsService;
