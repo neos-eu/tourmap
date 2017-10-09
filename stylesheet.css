@@ -1,4 +1,11 @@
+#map-container {
+    height: 76vh;
+    overflow: hidden;
+}
 
+#map {
+    height: 100%;
+}
 
 #countdown-overlay {
     position:absolute;
@@ -18,8 +25,17 @@
 }
 
 @media (max-width: 768px){
+    #map-container {
+        height: auto;
+    }
+
+    #map {
+        height: 76vh;
+    }
+
     #countdown-overlay {
         position: static;
         height: auto;
+        opacity: 1.0;
     }
 }

@@ -34,31 +34,31 @@ of your party.
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <link rel="stylesheet" href="stylesheet.css">
+    <script src="http://code.jquery.com/jquery-latest.min.js"
+            type="text/javascript"></script>
     <style>
-        #map {
-        height: 76vh;
-    }
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-    .map-box {
-        width: 200px;
-    }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .map-box {
+            width: 200px;
+        }
     </style>
 </head>
 <body>
+<div id="map-container">
 <div id="map"></div>
-<script src="http://code.jquery.com/jquery-latest.min.js"
-        type="text/javascript"></script>
 <div id="countdown-overlay" style="">
     <div class="overlay-middle">
         <div style="text-align:center;">
             <div id="countdown"></div>
-            <p>So hauptnah gab es noch kein Wahlfinale! Verfolge Matthias Strolz und Irmgard Griss ab Donnerstag 36 Stunden lang live auf Tour um Menschen in ganz Österreich zu überzeugen.</p>
+            <p>Der längste Wahlabschluss Österreichs. Sei live dabei, wenn Matthias Strolz und Irmgard Griss ab Donnerstag Abend 36 Stunden lang auf Tour gehen und Menschen in ganz Österreich treffen.</p
         </div>
     </div>
+</div>
 </div>
 <script>// <![CDATA[
 function formatted_number(number){
@@ -92,17 +92,18 @@ $(function(){
 <script>
 
     var imagePathPrefix = "";
-    var imagePathStrolz1 = imagePathPrefix + "strolz1.png";
-    var imagePathStrolz2 = imagePathPrefix + "strolz2.png";
-    var imagePathGriss1 = imagePathPrefix + "griss1.png";
-    var imagePathGrissStrolz = imagePathPrefix + "grissstrolz.png";
+    var imagePathBubble = "bubble32px.png";
+
 
     var map;
     function initMap() {
 
         var markerArray = [];
 
-
+        var imageBubble = {
+            url: imagePathPrefix + imagePathBubble,
+            anchor: new google.maps.Point(2,29)
+        };
 
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 47.6746209, lng: 13.5},
@@ -594,7 +595,7 @@ $(function(){
 
 /*
         var geocoder = new google.maps.Geocoder();
-        var address = "Linz";
+        var address = "Klagenfurt";
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === 'OK') {
                 var foo = results[0].geometry.location;
@@ -608,7 +609,7 @@ $(function(){
             } else {
                 alert('Geocode was not successful for the following reason: ' + status);
             }
-        });*/
+        });/**/
 
 
 
@@ -616,14 +617,13 @@ $(function(){
             title: "Wien",
             position: {lat: 48.2081743, lng: 16.3738189},
             html: '<div class="map-box"><h2>Mat legt los</h2><p>36 Stunden durch ganz Österreich und du bist live dabei.</p><a href="https://neos.eu">Zur Challenge</a></div>'
-            //,
-            //image: imagePathGrissStrolz
+            //, image: imageBubble
         };
         var position_dornbirn = { // Challenge
             title: "Dornbirn",
             position: {lat: 47.4124, lng: 9.74379},
             html: '<p>test2</p>'
-            //, image: imagePathStrolz1
+            //, image: imageBubble
         };
         var position_innsbruck = { // challenge 2
             title: "Innsbruck",
@@ -635,7 +635,7 @@ $(function(){
             title: "Salzburg",
             position: {lat: 47.80949, lng: 13.05501},
             html: '<p>test3</p>'
-            //, image: imagePathGrissStrolz
+            //, image: imageBubble
         };
         var position_linz = { // challenge 3
             title: "Linz",
@@ -655,9 +655,15 @@ $(function(){
             html: '<p>test5</p>'
             //, image: imagePathGrissStrolz
         };
+        var position_klagenfurt = {
+            title: "Klagenfurt",
+            position: {lat: 46.6364598, lng: 14.312224600000036},
+            html: '<p>test5</p>'
+            //, image: imagePathGrissStrolz
+        };
 
 
-        var positions = [position_dornbirn, position_salzburg, position_graz, position_stpoelten, position_innsbruck, position_linz, position_wien];
+        var positions = [position_dornbirn, position_salzburg, position_graz, position_stpoelten, position_innsbruck, position_linz, position_wien, position_klagenfurt];
 
 
 
@@ -684,19 +690,12 @@ $(function(){
             markers[i] = marker;
         }
 
-//                                                                                                                      Travel Marker
-        /*
-        var marker = new google.maps.Marker({
-            map: map,
-            position: position_wien.position,
-            icon: "grissstrolz.png"
-        });
 
 
         var travelParts = [
             {
-                source: position_wien,
-                target: position_dornbirn
+                source: position_graz,
+                target: position_salzburg
             },
             {
                 source: position_dornbirn,
@@ -712,9 +711,83 @@ $(function(){
             },
             {
                 source: position_linz,
+                target: position_stpoelten
+            },
+            {
+                source: position_stpoelten,
                 target: position_wien
+            },
+            {
+                source: position_wien,
+                target: position_graz
+            },
+            {
+                source: position_klagenfurt,
+                target: position_graz
+            },
+            {
+                source: position_klagenfurt,
+                target: position_innsbruck
             }
         ];
+
+
+        var lineSymbol = {
+            path: 'M 0,-1 0,1',
+            strokeOpacity: 1,
+            scale: 4
+        };
+
+        var lines = [];
+
+        for (i = 0; i < travelParts.length; i++) {
+
+            var sourcePath = new google.maps.LatLng(travelParts[i].source.position.lat, travelParts[i].source.position.lng);
+            var targetPath = new google.maps.LatLng(travelParts[i].target.position.lat, travelParts[i].target.position.lng);
+
+            var line = new google.maps.Polyline({
+                //
+                path: [sourcePath, targetPath],
+                strokeOpacity: 0.0,
+                strokeWeight: 2,
+                strokeColor: '#e84188',
+                geodesic: true,
+                icons: [{
+                    icon: lineSymbol,
+                    offset: '100%',
+                    repeat: '30px'
+                }]
+            });
+            line.setMap(map);
+            lines.push(line);
+        } //end of for loop
+        // alert(lines.length);
+
+        var animate = function() {
+            var count = 0;
+            offsetId = window.setInterval(function () {
+                count = (count + 1) % 2000;
+                for (var i = 0; i < lines.length; i++) {
+                    var icons = lines[i].get('icons');
+                    icons[0].offset = (count / 2) + '%';
+                    lines[i].set('icons', icons);
+                }
+            }, 200);
+        };
+
+        animate();
+
+
+
+//                                                                                                                      Travel Marker
+        /*
+        var marker = new google.maps.Marker({
+            map: map,
+            position: position_wien.position,
+            icon: "grissstrolz.png"
+        });
+
+
 
         for(var i = 0; i < travelParts.length; i++){
             // store a LatLng for each step of the animation
