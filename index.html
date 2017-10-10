@@ -94,6 +94,8 @@ $(function(){
     var imagePathPrefix = "";
     var imagePathBubble = imagePathPrefix + "bubble32px.png";
     var imagePathStrolz = imagePathPrefix + "strolz.png";
+    var imagePathGriss = imagePathPrefix + "griss.png";
+    var imagePathGrissStrolz = imagePathPrefix + "grissstrolz.png";
     var imagePathHaus = imagePathPrefix + "haus.png";
     var imagePathKreuz = imagePathPrefix + "partei.png";
 
@@ -696,7 +698,6 @@ $(function(){
             //, image: imagePathGrissStrolz
         };
 
-
         var positions = [position_dornbirn, position_salzburg, position_graz, position_stpoelten, position_innsbruck, position_linz, position_wien, position_klagenfurt];
 
         var infowindow;
@@ -810,6 +811,9 @@ $(function(){
 
         animate();
 
+        //                                                                                                              TOUR
+
+        //Strolz
         var dateTransferDornbirnInnsbruckStart = new Date(2017,9,10,10,45,0,0);
         dateTransferDornbirnInnsbruckStart.setUTCDate(10);
         dateTransferDornbirnInnsbruckStart.setUTCHours(12);
@@ -830,25 +834,112 @@ $(function(){
         dateTransferInnsbruckSalzburgEnd.setUTCHours(12);
         dateTransferInnsbruckSalzburgEnd.setUTCMinutes(24);
 
+        // Griss
+        var dateTransferKlagenfurtGrazStart = new Date(2017,9,10,10,45,0,0);
+        dateTransferKlagenfurtGrazStart.setUTCDate(10);
+        dateTransferKlagenfurtGrazStart.setUTCHours(12);
+        dateTransferKlagenfurtGrazStart.setUTCMinutes(21);
+
+        var dateTransferKlagenfurtGrazEnd = new Date(2017,9,10,10,45,0,0);
+        dateTransferKlagenfurtGrazEnd.setUTCDate(10);
+        dateTransferKlagenfurtGrazEnd.setUTCHours(12);
+        dateTransferKlagenfurtGrazEnd.setUTCMinutes(22);
+
+        var dateTransferGrazSalzburgStart = new Date(2017,9,10,10,45,0,0);
+        dateTransferGrazSalzburgStart.setUTCDate(10);
+        dateTransferGrazSalzburgStart.setUTCHours(12);
+        dateTransferGrazSalzburgStart.setUTCMinutes(23);
+
+        var dateTransferGrazSalzburgEnd = new Date(2017,9,10,10,45,0,0);
+        dateTransferGrazSalzburgEnd.setUTCDate(10);
+        dateTransferGrazSalzburgEnd.setUTCHours(12);
+        dateTransferGrazSalzburgEnd.setUTCMinutes(24);
+
+        // Gemeinsam
+        var dateTransferSalzburgLinzStart = new Date(2017,9,10,10,45,0,0);
+        dateTransferSalzburgLinzStart.setUTCDate(10);
+        dateTransferSalzburgLinzStart.setUTCHours(12);
+        dateTransferSalzburgLinzStart.setUTCMinutes(23);
+
+        var dateTransferSalzburgLinzEnd = new Date(2017,9,10,10,45,0,0);
+        dateTransferInnsbruckSalzburgEnd.setUTCDate(10);
+        dateTransferInnsbruckSalzburgEnd.setUTCHours(12);
+        dateTransferInnsbruckSalzburgEnd.setUTCMinutes(24);
+
+        var dateTransferLinzStPoeltenStart = new Date(2017,9,10,10,45,0,0);
+        dateTransferLinzStPoeltenStart.setUTCDate(10);
+        dateTransferLinzStPoeltenStart.setUTCHours(12);
+        dateTransferLinzStPoeltenStart.setUTCMinutes(23);
+
+        var dateTransferLinzStPoeltenEnd = new Date(2017,9,10,10,45,0,0);
+        dateTransferLinzStPoeltenEnd.setUTCDate(10);
+        dateTransferLinzStPoeltenEnd.setUTCHours(12);
+        dateTransferLinzStPoeltenEnd.setUTCMinutes(24);
+
+        var dateTransferStPoeltenWienStart = new Date(2017,9,10,10,45,0,0);
+        dateTransferStPoeltenWienStart.setUTCDate(10);
+        dateTransferStPoeltenWienStart.setUTCHours(12);
+        dateTransferStPoeltenWienStart.setUTCMinutes(23);
+
+        var dateTransferStPoeltenWienEnd = new Date(2017,9,10,10,45,0,0);
+        dateTransferStPoeltenWienEnd.setUTCDate(10);
+        dateTransferStPoeltenWienEnd.setUTCHours(12);
+        dateTransferStPoeltenWienEnd.setUTCMinutes(24);
+
+        var dateFarFuture = new Date(2020,9,10,10,45,0,0);
+        dateFarFuture.setUTCDate(10);
+        dateFarFuture.setUTCHours(12);
+        dateFarFuture.setUTCMinutes(24);
+
         var debug = true;
         if(debug == true){
+            var timePause = 1000;
+            var timeTransfer = 3000;
+
             var now = new Date().getTime();
             now += 2000;
             dateTransferDornbirnInnsbruckStart = new Date(now);
-            now += 10000;
+            dateTransferKlagenfurtGrazStart = new Date(now);
+            now += timeTransfer;
             dateTransferDornbirnInnsbruckEnd = new Date(now);
-            now += 5000;
+            dateTransferKlagenfurtGrazEnd = new Date(now);
+            now += timePause;
             dateTransferInnsbruckSalzburgStart = new Date(now);
-            now += 10000;
+            dateTransferGrazSalzburgStart = new Date(now);
+            now += timeTransfer;
             dateTransferInnsbruckSalzburgEnd = new Date(now);
+            dateTransferGrazSalzburgEnd = new Date(now);
+            now += timePause;
+            dateTransferSalzburgLinzStart = new Date(now);
+            now += timeTransfer;
+            dateTransferSalzburgLinzEnd = new Date(now);
+            now += timePause;
+            dateTransferLinzStPoeltenStart = new Date(now);
+            now += timeTransfer;
+            dateTransferLinzStPoeltenEnd = new Date(now);
+            now += timePause;
+            dateTransferStPoeltenWienStart = new Date(now);
+            now += timeTransfer;
+            dateTransferStPoeltenWienEnd = new Date(now);
+            now += 100000000000000;
+            dateFarFuture = new Date(now);
         }
 
         var markerStrolz = new google.maps.Marker({
-            map: map,
             icon: imagePathStrolz
         });
 
+        var markerGriss = new google.maps.Marker({
+            icon: imagePathGriss
+        });
+
+        var markerGrissStrolz = new google.maps.Marker({
+            icon: imagePathGrissStrolz
+        });
+
+
         var tourRoutes = [
+                //Strolz
             {
                 marker: markerStrolz,
                 startPosition: position_dornbirn.position,
@@ -859,10 +950,90 @@ $(function(){
             {
                 marker: markerStrolz,
                 startPosition: position_innsbruck.position,
+                startDate: dateTransferDornbirnInnsbruckEnd,
+                endPosition: position_innsbruck.position,
+                endDate: dateTransferInnsbruckSalzburgStart
+            },
+            {
+                marker: markerStrolz,
+                startPosition: position_innsbruck.position,
                 startDate: dateTransferInnsbruckSalzburgStart,
                 endPosition: position_salzburg.position,
                 endDate: dateTransferInnsbruckSalzburgEnd
+            },
+                // Griss
+            {
+                marker: markerGriss,
+                startPosition: position_klagenfurt.position,
+                startDate: dateTransferKlagenfurtGrazStart,
+                endPosition: position_graz.position,
+                endDate: dateTransferKlagenfurtGrazEnd
+            },
+            {
+                marker: markerGriss,
+                startPosition: position_graz.position,
+                startDate: dateTransferKlagenfurtGrazEnd,
+                endPosition: position_graz.position,
+                endDate: dateTransferGrazSalzburgStart
+            },
+            {
+                marker: markerGriss,
+                startPosition: position_graz.position,
+                startDate: dateTransferGrazSalzburgStart,
+                endPosition: position_salzburg.position,
+                endDate: dateTransferGrazSalzburgEnd
+            },
+                // Gemeinsam
+            {
+                marker: markerGrissStrolz,
+                startPosition: position_salzburg.position,
+                startDate: dateTransferGrazSalzburgEnd,
+                endPosition: position_salzburg.position,
+                endDate: dateTransferSalzburgLinzStart
+            },
+            {
+                marker: markerGrissStrolz,
+                startPosition: position_salzburg.position,
+                startDate: dateTransferSalzburgLinzStart,
+                endPosition: position_linz.position,
+                endDate: dateTransferSalzburgLinzEnd
+            },
+            {
+                marker: markerGrissStrolz,
+                startPosition: position_linz.position,
+                startDate: dateTransferSalzburgLinzEnd,
+                endPosition: position_linz.position,
+                endDate: dateTransferLinzStPoeltenStart
+            },
+            {
+                marker: markerGrissStrolz,
+                startPosition: position_linz.position,
+                startDate: dateTransferLinzStPoeltenStart,
+                endPosition: position_stpoelten.position,
+                endDate: dateTransferLinzStPoeltenEnd
+            },
+            {
+                marker: markerGrissStrolz,
+                startPosition: position_stpoelten.position,
+                startDate: dateTransferLinzStPoeltenEnd,
+                endPosition: position_stpoelten.position,
+                endDate: dateTransferStPoeltenWienStart
+            },
+            {
+                marker: markerGrissStrolz,
+                startPosition: position_stpoelten.position,
+                startDate: dateTransferStPoeltenWienStart,
+                endPosition: position_wien.position,
+                endDate: dateTransferStPoeltenWienEnd
+            },
+            {
+                marker: markerGrissStrolz,
+                startPosition: position_wien.position,
+                startDate: dateTransferStPoeltenWienEnd,
+                endPosition: position_wien.position,
+                endDate: dateFarFuture
             }
+
 
         ];
 
@@ -877,6 +1048,11 @@ $(function(){
                 var tourRoute = tourRoutes[i];
                 var now = new Date();
                 if(now > tourRoute.startDate && now < tourRoute.endDate){
+
+                    if(tourRoute.marker.getMap() == null){
+                        tourRoute.marker.setMap(map);
+                    }
+
                     var position_source = tourRoute.startPosition;
                     var position_target = tourRoute.endPosition;
 
@@ -889,6 +1065,10 @@ $(function(){
 
                     tourRoute.marker.setPosition({lat:curLat, lng:curLng});
 
+                    tourRoute.updateMeNextFrame = true;
+                } else if(tourRoute.updateMeNextFrame){
+                    tourRoute.marker.setMap(null);
+                    tourRoute.updateMeNextFrame = false;
                 }
             }
 
@@ -897,8 +1077,12 @@ $(function(){
             }, wait);
         };
 
+        var updateInterval = 1000;
+        if(debug){
+            updateInterval = 20;
+        }
         // begin animation, send back to origin after completion
-        updateTravelPositions(20);
+        updateTravelPositions(updateInterval);
 
 /**/
 
