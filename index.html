@@ -92,7 +92,11 @@ $(function(){
 <script>
 
     var imagePathPrefix = "";
-    var imagePathBubble = "bubble32px.png";
+    var imagePathBubble = imagePathPrefix + "bubble32px.png";
+    var imagePathStrolz = imagePathPrefix + "strolz.png";
+    var imagePathHaus = imagePathPrefix + "haus.png";
+    var imagePathKreuz = imagePathPrefix + "partei.png";
+
 
 
     var map;
@@ -101,8 +105,13 @@ $(function(){
         var markerArray = [];
 
         var imageBubble = {
-            url: imagePathPrefix + imagePathBubble,
+            url: imagePathBubble,
             anchor: new google.maps.Point(2,29)
+        };
+
+        var imageKreuz = {
+            url: imagePathKreuz,
+            anchor: new google.maps.Point(16,48)
         };
 
         map = new google.maps.Map(document.getElementById('map'), {
@@ -642,7 +651,7 @@ $(function(){
             title: "Wien",
             position: {lat: 48.2081743, lng: 16.3738189},
             html: '<div class="map-box"><h2>Mat legt los</h2><p>36 Stunden durch ganz Österreich und du bist live dabei.</p><a href="https://neos.eu">Zur Challenge</a></div>'
-            //, image: imageBubble
+            , image: imageKreuz
         };
         var position_dornbirn = { // Challenge
             title: "Dornbirn",
@@ -716,7 +725,7 @@ $(function(){
 
 
 
-        var travelParts = [
+        var lineConnections = [
             {
                 source: position_graz,
                 target: position_salzburg
@@ -764,10 +773,10 @@ $(function(){
 
         var lines = [];
 
-        for (i = 0; i < travelParts.length; i++) {
+        for (i = 0; i < lineConnections.length; i++) {
 
-            var sourcePath = new google.maps.LatLng(travelParts[i].source.position.lat, travelParts[i].source.position.lng);
-            var targetPath = new google.maps.LatLng(travelParts[i].target.position.lat, travelParts[i].target.position.lng);
+            var sourcePath = new google.maps.LatLng(lineConnections[i].source.position.lat, lineConnections[i].source.position.lng);
+            var targetPath = new google.maps.LatLng(lineConnections[i].target.position.lat, lineConnections[i].target.position.lng);
 
             var line = new google.maps.Polyline({
                 //
@@ -801,51 +810,97 @@ $(function(){
 
         animate();
 
+        var dateTransferDornbirnInnsbruckStart = new Date(2017,9,10,10,45,0,0);
+        dateTransferDornbirnInnsbruckStart.setUTCDate(10);
+        dateTransferDornbirnInnsbruckStart.setUTCHours(12);
+        dateTransferDornbirnInnsbruckStart.setUTCMinutes(21);
 
+        var dateTransferDornbirnInnsbruckEnd = new Date(2017,9,10,10,45,0,0);
+        dateTransferDornbirnInnsbruckEnd.setUTCDate(10);
+        dateTransferDornbirnInnsbruckEnd.setUTCHours(12);
+        dateTransferDornbirnInnsbruckEnd.setUTCMinutes(22);
 
-//                                                                                                                      Travel Marker
-        /*
-        var marker = new google.maps.Marker({
-            map: map,
-            position: position_wien.position,
-            icon: "grissstrolz.png"
-        });
+        var dateTransferInnsbruckSalzburgStart = new Date(2017,9,10,10,45,0,0);
+        dateTransferInnsbruckSalzburgStart.setUTCDate(10);
+        dateTransferInnsbruckSalzburgStart.setUTCHours(12);
+        dateTransferInnsbruckSalzburgStart.setUTCMinutes(23);
 
+        var dateTransferInnsbruckSalzburgEnd = new Date(2017,9,10,10,45,0,0);
+        dateTransferInnsbruckSalzburgEnd.setUTCDate(10);
+        dateTransferInnsbruckSalzburgEnd.setUTCHours(12);
+        dateTransferInnsbruckSalzburgEnd.setUTCMinutes(24);
 
-
-        for(var i = 0; i < travelParts.length; i++){
-            // store a LatLng for each step of the animation
-            var position_source = travelParts[i].source;
-            var position_target = travelParts[i].target;
-
-            var frames = [];
-            for (var percent = 0; percent < 1; percent += 0.01) {
-                var curLat = position_source.position.lat + percent * (position_target.position.lat - position_source.position.lat);
-                var curLng = position_source.position.lng + percent * (position_target.position.lng - position_source.position.lng);
-                frames.push(new google.maps.LatLng(curLat, curLng));
-            }
-            travelParts[i].frames = frames;
+        var debug = true;
+        if(debug == true){
+            var now = new Date().getTime();
+            now += 2000;
+            dateTransferDornbirnInnsbruckStart = new Date(now);
+            now += 10000;
+            dateTransferDornbirnInnsbruckEnd = new Date(now);
+            now += 5000;
+            dateTransferInnsbruckSalzburgStart = new Date(now);
+            now += 10000;
+            dateTransferInnsbruckSalzburgEnd = new Date(now);
         }
 
-        var move = function(marker, currentTravelPart, currentFrame, wait) {
-            marker.setPosition(travelParts[currentTravelPart].frames[currentFrame]);
-            if(currentFrame == travelParts[currentTravelPart].frames.length-1) {
-                currentTravelPart++;
-                if(currentTravelPart >= travelParts.length){
-                    currentTravelPart = 0;
+        var markerStrolz = new google.maps.Marker({
+            map: map,
+            icon: imagePathStrolz
+        });
+
+        var tourRoutes = [
+            {
+                marker: markerStrolz,
+                startPosition: position_dornbirn.position,
+                startDate: dateTransferDornbirnInnsbruckStart,
+                endPosition: position_innsbruck.position,
+                endDate: dateTransferDornbirnInnsbruckEnd
+            },
+            {
+                marker: markerStrolz,
+                startPosition: position_innsbruck.position,
+                startDate: dateTransferInnsbruckSalzburgStart,
+                endPosition: position_salzburg.position,
+                endDate: dateTransferInnsbruckSalzburgEnd
+            }
+
+        ];
+
+        //                                                                                                              Travel Marker
+
+
+
+        var updateTravelPositions = function(wait) {
+
+            for(var i = 0; i < tourRoutes.length; i++){
+                // store a LatLng for each step of the animation
+                var tourRoute = tourRoutes[i];
+                var now = new Date();
+                if(now > tourRoute.startDate && now < tourRoute.endDate){
+                    var position_source = tourRoute.startPosition;
+                    var position_target = tourRoute.endPosition;
+
+                    var duration = tourRoute.endDate - tourRoute.startDate;
+                    var actual = now - tourRoute.startDate;
+                    var percent = actual / duration;
+
+                    var curLat = position_source.lat + percent * (position_target.lat - position_source.lat);
+                    var curLng = position_source.lng + percent * (position_target.lng - position_source.lng);
+
+                    tourRoute.marker.setPosition({lat:curLat, lng:curLng});
+
                 }
-                currentFrame = 0;
             }
 
             setTimeout(function() {
-                move(marker, currentTravelPart, currentFrame+1, wait);
+                updateTravelPositions(wait);
             }, wait);
-        }
+        };
 
         // begin animation, send back to origin after completion
-        move(marker, 0, 0, 20);
+        updateTravelPositions(20);
 
-*/
+/**/
 
         //                                                                                                              Routing
         /*
