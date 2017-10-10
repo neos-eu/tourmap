@@ -112,6 +112,26 @@ $(function(){
             minZoom: 7
         });
 
+        //                                                                                                              Focus
+
+        var refocus = function(){
+            var bounds = new google.maps.LatLngBounds(
+                    new google.maps.LatLng(46.373874, 9.533314),
+                    new google.maps.LatLng(49.012635, 17.160764)
+            );
+            map.fitBounds(bounds);
+        };
+
+        refocus();
+
+        $(window).resize(function(){
+            //var center = map.getCenter();
+            google.maps.event.trigger(map, "resize");
+            refocus();
+        });
+
+        //                                                                                                              FUSION TABLE / COUNTRY BORDER
+
         var world_geometry = new google.maps.FusionTablesLayer({
             query: {
                 select: 'geometry',
@@ -129,23 +149,6 @@ $(function(){
             ],
             map: map,
             suppressInfoWindows: true
-        });
-
-        var refocus = function(){
-            var bounds = new google.maps.LatLngBounds(
-                    new google.maps.LatLng(46.373874, 9.533314),
-                    new google.maps.LatLng(49.012635, 17.160764)
-            );
-            map.fitBounds(bounds);
-        };
-
-        refocus();
-
-        //google.maps.event.addDomListener(window, 'load', initialize);
-        $(window).resize(function(){
-            //var center = map.getCenter();
-            google.maps.event.trigger(map, "resize");
-            refocus();
         });
 
         //                                                                                                              CONTROLS
@@ -614,6 +617,7 @@ $(function(){
 
         map.setOptions({styles: styles});
 
+        //                                                                                                              GEOCODING
 /*
         var geocoder = new google.maps.Geocoder();
         var address = "Klagenfurt";
@@ -632,7 +636,7 @@ $(function(){
             }
         });/**/
 
-
+        //                                                                                                              POIS
 
         var position_wien = {
             title: "Wien",
@@ -686,7 +690,7 @@ $(function(){
 
         var positions = [position_dornbirn, position_salzburg, position_graz, position_stpoelten, position_innsbruck, position_linz, position_wien, position_klagenfurt];
 
-
+        var infowindow;
 
         var markers = [];
         for(var i = 0; i < positions.length; i++){
@@ -697,16 +701,15 @@ $(function(){
                 icon: positions[i].image
             });
 
+            marker.addListener('click', function() {
+                if(infowindow != null){
+                    infowindow.close();
+                }
+                infowindow = new google.maps.InfoWindow({content:this.content});
+                infowindow.open(map, this);
+            });
 
-
-            //var infowindow = new google.maps.InfoWindow({content:positions[i].html});
-            //infowindow.open(map, marker);
-            /*
-             marker.addListener('click', function() {
-             this.infowindow = new google.maps.InfoWindow({content:this.content});
-             this.infowindow.open(map, this);
-             });
-             */
+            marker.content = positions[i].html;
 
             markers[i] = marker;
         }
