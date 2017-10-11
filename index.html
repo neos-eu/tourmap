@@ -50,17 +50,18 @@ of your party.
 </head>
 <body>
 <div id="map-container">
-<div id="map"></div>
-<div id="countdown-overlay" style="display:none">
-    <div class="overlay-middle">
-        <div style="text-align:center;">
-            <div id="countdown"></div>
-            <p>Der längste Wahlabschluss Österreichs. Sei live dabei, wenn Matthias Strolz und Irmgard Griss ab Donnerstag Abend 36 Stunden lang auf Tour gehen und Menschen in ganz Österreich treffen.</p
+    <div id="map"></div>
+    <div id="countdown-overlay" style="display:none">
+        <div class="overlay-middle">
+            <div style="text-align:center;">
+                <div id="countdown"></div>
+                <p>Der längste Wahlabschluss Österreichs. Sei live dabei, wenn Matthias Strolz und Irmgard Griss ab Donnerstag Abend 36 Stunden lang auf Tour gehen und Menschen in ganz Österreich treffen.</p
+            </div>
         </div>
     </div>
 </div>
-</div>
-<script>// <![CDATA[
+<div id="debug-output"></div>
+<script>
 function formatted_number(number){
     return ("0" + number).slice(-2);
 }
@@ -88,8 +89,7 @@ $(function(){
         $("#countdown").html("<h1 style=\"font-size:72pt\">" + days + ":" + formatted_number(hours) + ":" + formatted_number(minutes) + ":" + formatted_number(seconds) + "</h1>");
     },1000);
 });
-// ]]></script>
-<script>
+
 
     var imagePathPrefix = "";
     var imagePathBubble = imagePathPrefix + "bubble32px.png";
@@ -100,7 +100,30 @@ $(function(){
     var imagePathFlagChallenge = imagePathPrefix + "flag2.png";
     var imagePathFlagGoal = imagePathPrefix + "flag3.png";
 
+    var simulateTour = true;
+    var simulationStartRealTime = new Date();
+    var simulatedTourStartDate = new Date(2017,9,13,8,0,0,0);
+    var simulatedTourEndDate = new Date(2017,9,14,20,0,0,0);
+    const simulationTimeMultiplier = 60 * 60 * 3;
 
+
+    function getNow(){
+        var now = new Date();
+        if(simulateTour){
+            var diff = now - simulationStartRealTime;
+            diff *= simulationTimeMultiplier;
+            if(diff > simulatedTourEndDate - simulatedTourStartDate){
+                simulationStartRealTime = new Date();
+            }
+
+            var newDateMilliseconds = simulatedTourStartDate.getTime() + diff;
+            var result = new Date(newDateMilliseconds);
+            return result;
+        }
+        else {
+            return now;
+        }
+    }
 
     var map;
     function initMap() {
@@ -659,7 +682,7 @@ $(function(){
         //                                                                                                              GEOCODING
 /*
         var geocoder = new google.maps.Geocoder();
-        var address = "Klagenfurt";
+        var address = "Bregenz";
         geocoder.geocode({'address': address}, function(results, status) {
             if (status === 'OK') {
                 var foo = results[0].geometry.location;
@@ -678,56 +701,57 @@ $(function(){
         //                                                                                                              POIS
 
 
-        var position_dornbirn = { // Challenge
-            title: "Dornbirn",
-            position: {lat: 47.4124, lng: 9.74379},
-            html: '<p>test2</p>'
+        var position_bregenz = { // Challenge
+            position: {lat: 47.50075, lng: 9.74231},
+            title: "Bregenz",
+            date: "Freitag, 8:30 - 9:00 Uhr",
+            description: 'Matthias Strolz startet die 36-Stunden-Tour in seiner Heimat - in Vorarlberg. Sei live dabei, wenn er seine erste Chancen-Challenge antritt.'
             , image: imageFlagChallenge
         };
         var position_innsbruck = { // challenge 2
-            title: "Innsbruck",
             position: {lat: 47.2692124, lng: 11.404102400000056},
-            html: '<p>test5</p>'
+            title: "Innsbruck",
+            date: "Freitag, 13:15 - 15:15 Uhr",
+            description: 'Zweite Station für Matthias Strolz: In Tirols Landeshauptstadt absolviert er seine zweite Chancen-Challenge.'
             , image: imageFlagChallenge
         };
+
+        var position_graz = {
+            position: {lat: 47.070714, lng: 15.439503999999943},
+            title: "Graz",
+            description: "Irmgard Griss' zweite Station: Ihr Heimatbundesland Steiermark."
+            , image: imageFlag
+        };
         var position_salzburg = {
-            title: "Salzburg",
             position: {lat: 47.80949, lng: 13.05501},
-            html: '<p>test3</p>'
+            title: "Salzburg",
+            date: "Freitag, 15:45 Uhr - Samstag, 8:52",
+            description: 'Matthias Strolz und Irmgard Griss treffen sich in Salzburg. Von hier aus fahren sie mit der Bahn nach Wien. Du willst dabei sein? Reserviere dir hier dein Ticket: <a href="">Ticket anmelden</a>'
             , image: imageFlag
         };
         var position_linz = { // challenge 3
-            title: "Linz",
             position: {lat: 48.30694, lng: 14.285830000000033},
-            html: '<p>test5</p>'
+            title: "Linz",
+            date: "Samstag, 10:00 - 12:01 Uhr",
+            description: 'Matthias Strolz und Irmgard Griss machen einen Zwischenstopp in Linz. Für Mat muss seine dritte Chancen-Challenge bestehen. Danach geht es mit der Bahn weiter nach Wien. Du willst dabei sein? Reserviere dir hier dein Ticket: <a href="">Ticket anmelden</a>'
             , image: imageFlagChallenge
         };
-        var position_klagenfurt = {
-            title: "Klagenfurt",
-            position: {lat: 46.6364598, lng: 14.312224600000036},
-            html: '<p>test5</p>'
-            , image: imageFlag
-        };
-        var position_graz = {
-            title: "Graz",
-            position: {lat: 47.070714, lng: 15.439503999999943},
-            html: '<p>test4</p>'
-            , image: imageFlag
-        };
         var position_stpoelten = {
-            title: "St. Pölten",
             position: {lat: 48.20353, lng: 15.63817},
-            html: '<p>test5</p>'
+            title: "St. Pölten",
+            date: "Samstag, 12:57 Uhr",
+            description: 'Bitte einsteigen! Steig ein, wenn du mit Matthias Strolz und Irmgard Griss nach Wien fahren möchtest: <a href="">Ticket anmelden</a>'
             , image: imageFlag
         };
         var position_wien = {
-            title: "Wien",
             position: {lat: 48.2081743, lng: 16.3738189},
-            html: '<div class="map-box"><h2>Mat legt los</h2><p>36 Stunden durch ganz Österreich und du bist live dabei.</p><a href="https://neos.eu">Zur Challenge</a></div>'
+            title: "Wien",
+            date: "Samstag, 13:20 - 15:00 Uhr",
+            description: 'Die 36-Stunden-Tour endet in Wien und wir treffen uns gemeinsam beim Wahlabschluss.'
             , image: imageFlagGoal
         };
 
-        var positions = [position_dornbirn, position_salzburg, position_graz, position_stpoelten, position_innsbruck, position_linz, position_wien, position_klagenfurt];
+        var positions = [position_bregenz, position_salzburg, position_graz, position_stpoelten, position_innsbruck, position_linz, position_wien];
 
         var infowindow;
 
@@ -749,7 +773,12 @@ $(function(){
                 infowindow.open(map, this);
             });
 
-            marker.content = positions[i].html;
+            var html =
+                    '<div class="map-box"><h1>' + positions[i].title + '</h1>' +
+                    '<div style="map-box-date">' + positions[i].date + "</div>" +
+                    '<div style="map-box-description">' + positions[i].description + "</div>";
+
+            marker.content = html;
 
             markers[i] = marker;
         }
@@ -762,7 +791,7 @@ $(function(){
                 target: position_salzburg
             },
             {
-                source: position_dornbirn,
+                source: position_bregenz,
                 target: position_innsbruck
             },
             {
@@ -784,14 +813,6 @@ $(function(){
             {
                 source: position_wien,
                 target: position_graz
-            },
-            {
-                source: position_klagenfurt,
-                target: position_graz
-            },
-            {
-                source: position_klagenfurt,
-                target: position_innsbruck
             }
         ];
 
@@ -843,117 +864,89 @@ $(function(){
 
         //                                                                                                              TOUR
 
-        //Strolz
-        var dateTransferDornbirnInnsbruckStart = new Date(2017,9,10,10,45,0,0);
-        dateTransferDornbirnInnsbruckStart.setUTCDate(10);
-        dateTransferDornbirnInnsbruckStart.setUTCHours(12);
-        dateTransferDornbirnInnsbruckStart.setUTCMinutes(21);
-
-        var dateTransferDornbirnInnsbruckEnd = new Date(2017,9,10,10,45,0,0);
-        dateTransferDornbirnInnsbruckEnd.setUTCDate(10);
-        dateTransferDornbirnInnsbruckEnd.setUTCHours(12);
-        dateTransferDornbirnInnsbruckEnd.setUTCMinutes(22);
-
-        var dateTransferInnsbruckSalzburgStart = new Date(2017,9,10,10,45,0,0);
-        dateTransferInnsbruckSalzburgStart.setUTCDate(10);
-        dateTransferInnsbruckSalzburgStart.setUTCHours(12);
-        dateTransferInnsbruckSalzburgStart.setUTCMinutes(23);
-
-        var dateTransferInnsbruckSalzburgEnd = new Date(2017,9,10,10,45,0,0);
-        dateTransferInnsbruckSalzburgEnd.setUTCDate(10);
-        dateTransferInnsbruckSalzburgEnd.setUTCHours(12);
-        dateTransferInnsbruckSalzburgEnd.setUTCMinutes(24);
-
         // Griss
-        var dateTransferKlagenfurtGrazStart = new Date(2017,9,10,10,45,0,0);
-        dateTransferKlagenfurtGrazStart.setUTCDate(10);
-        dateTransferKlagenfurtGrazStart.setUTCHours(12);
-        dateTransferKlagenfurtGrazStart.setUTCMinutes(21);
+        var dateGrissStart = new Date(2017,9,10,10,45,0,0);
+        dateGrissStart.setUTCDate(13);
+        dateGrissStart.setUTCHours(4);
+        dateGrissStart.setUTCMinutes(0);
 
-        var dateTransferKlagenfurtGrazEnd = new Date(2017,9,10,10,45,0,0);
-        dateTransferKlagenfurtGrazEnd.setUTCDate(10);
-        dateTransferKlagenfurtGrazEnd.setUTCHours(12);
-        dateTransferKlagenfurtGrazEnd.setUTCMinutes(22);
+        var dateTransferKlagenfurtGrazStart = new Date(2017,9,10,10,45,0,0);
+        dateTransferKlagenfurtGrazStart.setUTCDate(13);
+        dateTransferKlagenfurtGrazStart.setUTCHours(6);
+        dateTransferKlagenfurtGrazStart.setUTCMinutes(0);
 
         var dateTransferGrazSalzburgStart = new Date(2017,9,10,10,45,0,0);
-        dateTransferGrazSalzburgStart.setUTCDate(10);
-        dateTransferGrazSalzburgStart.setUTCHours(12);
-        dateTransferGrazSalzburgStart.setUTCMinutes(23);
+        dateTransferGrazSalzburgStart.setUTCDate(13);
+        dateTransferGrazSalzburgStart.setUTCHours(9);
+        dateTransferGrazSalzburgStart.setUTCMinutes(45);
 
         var dateTransferGrazSalzburgEnd = new Date(2017,9,10,10,45,0,0);
-        dateTransferGrazSalzburgEnd.setUTCDate(10);
-        dateTransferGrazSalzburgEnd.setUTCHours(12);
-        dateTransferGrazSalzburgEnd.setUTCMinutes(24);
+        dateTransferGrazSalzburgEnd.setUTCDate(13);
+        dateTransferGrazSalzburgEnd.setUTCHours(13);
+        dateTransferGrazSalzburgEnd.setUTCMinutes(44);
 
-        // Gemeinsam
+        //Strolz
+        var dateStrolzStart = new Date(2017,9,10,13,45,0,0);
+        dateStrolzStart.setUTCDate(13);
+        dateStrolzStart.setUTCHours(4);
+        dateStrolzStart.setUTCMinutes(0);
+
+        var dateTransferBregenzInnsbruckStart = new Date(2017,9,10,13,45,0,0);
+        dateTransferBregenzInnsbruckStart.setUTCDate(13);
+        dateTransferBregenzInnsbruckStart.setUTCHours(8);
+        dateTransferBregenzInnsbruckStart.setUTCMinutes(40);
+
+        var dateTransferBregenzInnsbruckEnd = new Date(2017,9,10,10,45,0,0);
+        dateTransferBregenzInnsbruckEnd.setUTCDate(13);
+        dateTransferBregenzInnsbruckEnd.setUTCHours(11);
+        dateTransferBregenzInnsbruckEnd.setUTCMinutes(11);
+
+        var dateTransferInnsbruckSalzburgStart = new Date(2017,9,10,10,45,0,0);
+        dateTransferInnsbruckSalzburgStart.setUTCDate(13);
+        dateTransferInnsbruckSalzburgStart.setUTCHours(13);
+        dateTransferInnsbruckSalzburgStart.setUTCMinutes(14);
+
+        var dateTransferInnsbruckSalzburgEnd = new Date(2017,9,10,10,45,0,0);
+        dateTransferInnsbruckSalzburgEnd.setUTCDate(13);
+        dateTransferInnsbruckSalzburgEnd.setUTCHours(15);
+        dateTransferInnsbruckSalzburgEnd.setUTCMinutes(01);
+
+        // Beide
         var dateTransferSalzburgLinzStart = new Date(2017,9,10,10,45,0,0);
-        dateTransferSalzburgLinzStart.setUTCDate(10);
-        dateTransferSalzburgLinzStart.setUTCHours(12);
-        dateTransferSalzburgLinzStart.setUTCMinutes(23);
+        dateTransferSalzburgLinzStart.setUTCDate(14);
+        dateTransferSalzburgLinzStart.setUTCHours(6);
+        dateTransferSalzburgLinzStart.setUTCMinutes(52);
 
         var dateTransferSalzburgLinzEnd = new Date(2017,9,10,10,45,0,0);
-        dateTransferInnsbruckSalzburgEnd.setUTCDate(10);
-        dateTransferInnsbruckSalzburgEnd.setUTCHours(12);
-        dateTransferInnsbruckSalzburgEnd.setUTCMinutes(24);
+        dateTransferSalzburgLinzEnd.setUTCDate(14);
+        dateTransferSalzburgLinzEnd.setUTCHours(8);
+        dateTransferSalzburgLinzEnd.setUTCMinutes(0);
 
         var dateTransferLinzStPoeltenStart = new Date(2017,9,10,10,45,0,0);
-        dateTransferLinzStPoeltenStart.setUTCDate(10);
-        dateTransferLinzStPoeltenStart.setUTCHours(12);
-        dateTransferLinzStPoeltenStart.setUTCMinutes(23);
+        dateTransferLinzStPoeltenStart.setUTCDate(14);
+        dateTransferLinzStPoeltenStart.setUTCHours(10);
+        dateTransferLinzStPoeltenStart.setUTCMinutes(1);
 
         var dateTransferLinzStPoeltenEnd = new Date(2017,9,10,10,45,0,0);
-        dateTransferLinzStPoeltenEnd.setUTCDate(10);
-        dateTransferLinzStPoeltenEnd.setUTCHours(12);
-        dateTransferLinzStPoeltenEnd.setUTCMinutes(24);
+        dateTransferLinzStPoeltenEnd.setUTCDate(14);
+        dateTransferLinzStPoeltenEnd.setUTCHours(10);
+        dateTransferLinzStPoeltenEnd.setUTCMinutes(57);
 
         var dateTransferStPoeltenWienStart = new Date(2017,9,10,10,45,0,0);
-        dateTransferStPoeltenWienStart.setUTCDate(10);
-        dateTransferStPoeltenWienStart.setUTCHours(12);
-        dateTransferStPoeltenWienStart.setUTCMinutes(23);
+        dateTransferStPoeltenWienStart.setUTCDate(14);
+        dateTransferStPoeltenWienStart.setUTCHours(11);
+        dateTransferStPoeltenWienStart.setUTCMinutes(0);
 
         var dateTransferStPoeltenWienEnd = new Date(2017,9,10,10,45,0,0);
-        dateTransferStPoeltenWienEnd.setUTCDate(10);
-        dateTransferStPoeltenWienEnd.setUTCHours(12);
-        dateTransferStPoeltenWienEnd.setUTCMinutes(24);
+        dateTransferStPoeltenWienEnd.setUTCDate(14);
+        dateTransferStPoeltenWienEnd.setUTCHours(11);
+        dateTransferStPoeltenWienEnd.setUTCMinutes(20);
 
         var dateFarFuture = new Date(2020,9,10,10,45,0,0);
         dateFarFuture.setUTCDate(10);
         dateFarFuture.setUTCHours(12);
         dateFarFuture.setUTCMinutes(24);
 
-        var debug = true;
-        if(debug == true){
-            var timePause = 1000;
-            var timeTransfer = 3000;
-
-            var now = new Date().getTime();
-            now += 2000;
-            dateTransferDornbirnInnsbruckStart = new Date(now);
-            dateTransferKlagenfurtGrazStart = new Date(now);
-            now += timeTransfer;
-            dateTransferDornbirnInnsbruckEnd = new Date(now);
-            dateTransferKlagenfurtGrazEnd = new Date(now);
-            now += timePause;
-            dateTransferInnsbruckSalzburgStart = new Date(now);
-            dateTransferGrazSalzburgStart = new Date(now);
-            now += timeTransfer;
-            dateTransferInnsbruckSalzburgEnd = new Date(now);
-            dateTransferGrazSalzburgEnd = new Date(now);
-            now += timePause;
-            dateTransferSalzburgLinzStart = new Date(now);
-            now += timeTransfer;
-            dateTransferSalzburgLinzEnd = new Date(now);
-            now += timePause;
-            dateTransferLinzStPoeltenStart = new Date(now);
-            now += timeTransfer;
-            dateTransferLinzStPoeltenEnd = new Date(now);
-            now += timePause;
-            dateTransferStPoeltenWienStart = new Date(now);
-            now += timeTransfer;
-            dateTransferStPoeltenWienEnd = new Date(now);
-            now += 100000000000000;
-            dateFarFuture = new Date(now);
-        }
 
         var markerStrolz = new google.maps.Marker({
             icon: imageStrolz,
@@ -975,43 +968,17 @@ $(function(){
 
 
         var tourRoutes = [
-                //Strolz
-            {
-                marker: markerStrolz,
-                startPosition: position_dornbirn.position,
-                startDate: dateTransferDornbirnInnsbruckStart,
-                endPosition: position_innsbruck.position,
-                endDate: dateTransferDornbirnInnsbruckEnd
-            },
-            {
-                marker: markerStrolz,
-                startPosition: position_innsbruck.position,
-                startDate: dateTransferDornbirnInnsbruckEnd,
-                endPosition: position_innsbruck.position,
-                endDate: dateTransferInnsbruckSalzburgStart
-            },
-            {
-                marker: markerStrolz,
-                startPosition: position_innsbruck.position,
-                startDate: dateTransferInnsbruckSalzburgStart,
-                endPosition: position_salzburg.position,
-                endDate: dateTransferInnsbruckSalzburgEnd
-            },
-                // Griss
-            {
-                marker: markerGriss,
-                startPosition: position_klagenfurt.position,
-                startDate: dateTransferKlagenfurtGrazStart,
-                endPosition: position_graz.position,
-                endDate: dateTransferKlagenfurtGrazEnd
-            },
+
+                ////////////////////////////////////////////// GRISS
+                // Griss startet in Graz
             {
                 marker: markerGriss,
                 startPosition: position_graz.position,
-                startDate: dateTransferKlagenfurtGrazEnd,
+                startDate: dateGrissStart,
                 endPosition: position_graz.position,
                 endDate: dateTransferGrazSalzburgStart
             },
+                // Griss: Graz nach Salzburg
             {
                 marker: markerGriss,
                 startPosition: position_graz.position,
@@ -1019,14 +986,57 @@ $(function(){
                 endPosition: position_salzburg.position,
                 endDate: dateTransferGrazSalzburgEnd
             },
-                // Gemeinsam
+                // Griss in Salzburg bis Strolz eintrifft
             {
-                marker: markerGrissStrolz,
+                marker: markerGriss,
                 startPosition: position_salzburg.position,
                 startDate: dateTransferGrazSalzburgEnd,
                 endPosition: position_salzburg.position,
+                endDate: dateTransferInnsbruckSalzburgEnd
+            },
+                ////////////////////////////////////////////// STROLZ
+                //Strolz startet in Bregenz
+            {
+                marker: markerStrolz,
+                startPosition: position_bregenz.position,
+                startDate: dateStrolzStart,
+                endPosition: position_bregenz.position,
+                endDate: dateTransferBregenzInnsbruckStart
+            },
+                // Strolz: Bregenz nach Innsbruck
+            {
+                marker: markerStrolz,
+                startPosition: position_bregenz.position,
+                startDate: dateTransferBregenzInnsbruckStart,
+                endPosition: position_innsbruck.position,
+                endDate: dateTransferBregenzInnsbruckEnd
+            },
+                // Strolz: Innsbruck
+            {
+                marker: markerStrolz,
+                startPosition: position_innsbruck.position,
+                startDate: dateTransferBregenzInnsbruckEnd,
+                endPosition: position_innsbruck.position,
+                endDate: dateTransferInnsbruckSalzburgStart
+            },
+                // Strolz: Innsbruck nach Salzburg
+            {
+                marker: markerStrolz,
+                startPosition: position_innsbruck.position,
+                startDate: dateTransferInnsbruckSalzburgStart,
+                endPosition: position_salzburg.position,
+                endDate: dateTransferInnsbruckSalzburgEnd
+            },
+                ////////////////////////////////////////////// BEIDE
+                // Beide: Start in Salzburg
+            {
+                marker: markerGrissStrolz,
+                startPosition: position_salzburg.position,
+                startDate: dateTransferInnsbruckSalzburgEnd,
+                endPosition: position_salzburg.position,
                 endDate: dateTransferSalzburgLinzStart
             },
+                // Beide: Salzburg nach Linz
             {
                 marker: markerGrissStrolz,
                 startPosition: position_salzburg.position,
@@ -1034,6 +1044,7 @@ $(function(){
                 endPosition: position_linz.position,
                 endDate: dateTransferSalzburgLinzEnd
             },
+                // Beide: Linz
             {
                 marker: markerGrissStrolz,
                 startPosition: position_linz.position,
@@ -1041,6 +1052,7 @@ $(function(){
                 endPosition: position_linz.position,
                 endDate: dateTransferLinzStPoeltenStart
             },
+                // Beide: Linz nach St. Pölten
             {
                 marker: markerGrissStrolz,
                 startPosition: position_linz.position,
@@ -1048,6 +1060,7 @@ $(function(){
                 endPosition: position_stpoelten.position,
                 endDate: dateTransferLinzStPoeltenEnd
             },
+                // Beide: St. Pölten
             {
                 marker: markerGrissStrolz,
                 startPosition: position_stpoelten.position,
@@ -1055,6 +1068,7 @@ $(function(){
                 endPosition: position_stpoelten.position,
                 endDate: dateTransferStPoeltenWienStart
             },
+                // Beide: St. Pölten nach Wien
             {
                 marker: markerGrissStrolz,
                 startPosition: position_stpoelten.position,
@@ -1062,6 +1076,7 @@ $(function(){
                 endPosition: position_wien.position,
                 endDate: dateTransferStPoeltenWienEnd
             },
+                // Beide: Wien
             {
                 marker: markerGrissStrolz,
                 startPosition: position_wien.position,
@@ -1082,7 +1097,8 @@ $(function(){
             for(var i = 0; i < tourRoutes.length; i++){
                 // store a LatLng for each step of the animation
                 var tourRoute = tourRoutes[i];
-                var now = new Date();
+                var now = getNow();
+                $("#debug-output").html(now);
                 if(now > tourRoute.startDate && now < tourRoute.endDate){
 
                     if(tourRoute.marker.getMap() == null){
@@ -1114,7 +1130,7 @@ $(function(){
         };
 
         var updateInterval = 1000;
-        if(debug){
+        if(simulateTour){
             updateInterval = 20;
         }
         // begin animation, send back to origin after completion

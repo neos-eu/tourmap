@@ -1,6 +1,6 @@
 #map-container {
     height: 76vh;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 #map {
