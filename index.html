@@ -96,8 +96,9 @@ $(function(){
     var imagePathStrolz = imagePathPrefix + "strolz.png";
     var imagePathGriss = imagePathPrefix + "griss.png";
     var imagePathGrissStrolz = imagePathPrefix + "grissstrolz.png";
-    var imagePathHaus = imagePathPrefix + "haus.png";
-    var imagePathKreuz = imagePathPrefix + "partei.png";
+    var imagePathFlag = imagePathPrefix + "flag1.png";
+    var imagePathFlagChallenge = imagePathPrefix + "flag2.png";
+    var imagePathFlagGoal = imagePathPrefix + "flag3.png";
 
 
 
@@ -106,21 +107,48 @@ $(function(){
 
         var markerArray = [];
 
+        var imageStrolz = {
+            url: imagePathStrolz,
+            anchor: new google.maps.Point(2,15)
+        };
+
+        var imageGriss = {
+            url: imagePathGriss,
+            anchor: new google.maps.Point(2,15)
+        };
+
+        var imageGrissStrolz = {
+            url: imagePathGrissStrolz,
+            anchor: new google.maps.Point(44,15)
+        };
+
+
         var imageBubble = {
             url: imagePathBubble,
             anchor: new google.maps.Point(2,29)
         };
 
-        var imageKreuz = {
-            url: imagePathKreuz,
-            anchor: new google.maps.Point(16,48)
+        var imageFlag = {
+            url: imagePathFlag,
+            anchor: new google.maps.Point(4,32)
         };
+
+        var imageFlagChallenge = {
+            url: imagePathFlagChallenge,
+            anchor: new google.maps.Point(6,40)
+        };
+
+        var imageFlagGoal = {
+            url: imagePathFlagGoal,
+            anchor: new google.maps.Point(6,48)
+        };
+
 
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 47.6746209, lng: 13.5},
             zoom: 8,
             draggable: false,
-            minZoom: 7
+            minZoom: 0
         });
 
         //                                                                                                              Focus
@@ -649,53 +677,54 @@ $(function(){
 
         //                                                                                                              POIS
 
-        var position_wien = {
-            title: "Wien",
-            position: {lat: 48.2081743, lng: 16.3738189},
-            html: '<div class="map-box"><h2>Mat legt los</h2><p>36 Stunden durch ganz Österreich und du bist live dabei.</p><a href="https://neos.eu">Zur Challenge</a></div>'
-            , image: imageKreuz
-        };
+
         var position_dornbirn = { // Challenge
             title: "Dornbirn",
             position: {lat: 47.4124, lng: 9.74379},
             html: '<p>test2</p>'
-            //, image: imageBubble
+            , image: imageFlagChallenge
         };
         var position_innsbruck = { // challenge 2
             title: "Innsbruck",
             position: {lat: 47.2692124, lng: 11.404102400000056},
             html: '<p>test5</p>'
-            //, image: imagePathStrolz2
+            , image: imageFlagChallenge
         };
         var position_salzburg = {
             title: "Salzburg",
             position: {lat: 47.80949, lng: 13.05501},
             html: '<p>test3</p>'
-            //, image: imageBubble
+            , image: imageFlag
         };
         var position_linz = { // challenge 3
             title: "Linz",
             position: {lat: 48.30694, lng: 14.285830000000033},
             html: '<p>test5</p>'
-            //, image: imagePathGrissStrolz
-        };
-        var position_graz = {
-            title: "Graz",
-            position: {lat: 47.070714, lng: 15.439503999999943},
-            html: '<p>test4</p>'
-            //, image: imagePathGriss1
-        };
-        var position_stpoelten = {
-            title: "St. Pölten",
-            position: {lat: 48.20353, lng: 15.63817},
-            html: '<p>test5</p>'
-            //, image: imagePathGrissStrolz
+            , image: imageFlagChallenge
         };
         var position_klagenfurt = {
             title: "Klagenfurt",
             position: {lat: 46.6364598, lng: 14.312224600000036},
             html: '<p>test5</p>'
-            //, image: imagePathGrissStrolz
+            , image: imageFlag
+        };
+        var position_graz = {
+            title: "Graz",
+            position: {lat: 47.070714, lng: 15.439503999999943},
+            html: '<p>test4</p>'
+            , image: imageFlag
+        };
+        var position_stpoelten = {
+            title: "St. Pölten",
+            position: {lat: 48.20353, lng: 15.63817},
+            html: '<p>test5</p>'
+            , image: imageFlag
+        };
+        var position_wien = {
+            title: "Wien",
+            position: {lat: 48.2081743, lng: 16.3738189},
+            html: '<div class="map-box"><h2>Mat legt los</h2><p>36 Stunden durch ganz Österreich und du bist live dabei.</p><a href="https://neos.eu">Zur Challenge</a></div>'
+            , image: imageFlagGoal
         };
 
         var positions = [position_dornbirn, position_salzburg, position_graz, position_stpoelten, position_innsbruck, position_linz, position_wien, position_klagenfurt];
@@ -703,6 +732,7 @@ $(function(){
         var infowindow;
 
         var markers = [];
+        // Marker erstellen und Logik für Infowindow
         for(var i = 0; i < positions.length; i++){
             var marker= new google.maps.Marker({
                 position: positions[i].position,
@@ -926,15 +956,21 @@ $(function(){
         }
 
         var markerStrolz = new google.maps.Marker({
-            icon: imagePathStrolz
+            icon: imageStrolz,
+            optimized: false,
+            zIndex: 999998
         });
 
         var markerGriss = new google.maps.Marker({
-            icon: imagePathGriss
+            icon: imageGriss,
+            optimized: false,
+            zIndex: 999999
         });
 
         var markerGrissStrolz = new google.maps.Marker({
-            icon: imagePathGrissStrolz
+            icon: imageGrissStrolz,
+            optimized: false,
+            zIndex: 999999
         });
 
 
