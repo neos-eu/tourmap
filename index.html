@@ -60,6 +60,30 @@
                 opacity: 1.0;
             }
         }
+
+        #markerLayer img {
+            animation: pulse 2.0s infinite alternate;
+            -webkit-animation: pulse 2.0s infinite alternate;
+            transition-timing-function: linear;
+            -webkit-transition-timing-function: linear;
+            transform-origin: center;
+            -webkit-transform-origin: center;
+        }
+
+        /* Animaitons */
+        @keyframes pulse{
+            to {
+                transform: scale(0.8);
+                -webkit-transform: scale(0.8);
+            }
+        }
+
+        @-webkit-keyframes pulse{
+            to {
+                transform: scale(0.8);
+                -webkit-transform: scale(0.8);
+            }
+        }
     </style>
 </head>
 <body>
@@ -119,7 +143,7 @@ $(function(){
     var simulationStartRealTime = new Date();
     var simulatedTourStartDate = new Date(2017,9,13,8,0,0,0);
     var simulatedTourEndDate = new Date(2017,9,14,20,0,0,0);
-    const simulationTimeMultiplier = 60 * 60 * 3;
+    const simulationTimeMultiplier = 60 * 5 * 1;
 
 
     function getNow(){
@@ -980,6 +1004,12 @@ $(function(){
             optimized: false,
             zIndex: 999999
         });
+
+        var tourOverlay = new google.maps.OverlayView();
+        tourOverlay.draw = function () {
+            this.getPanes().markerLayer.id='markerLayer';
+        };
+        tourOverlay.setMap(map);
 
 
         var tourRoutes = [
