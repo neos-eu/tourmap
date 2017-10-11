@@ -1,39 +1,11 @@
-<!--
-
-Great, you found me!
-
-Let me tell you a story about Wahlkampf.
-Wahlkampf is one of the best things that could ever happen to you.
-It's the possibility to fight for an idea you think is right and good and makes the world a better place.
-It's the possibility to fight without weapons and blood, but rather with ideas and words.
-It's the possibility to find a tribe of like-minded people and engage with them in the greatest challenge of our time,
-of every time: To hopefully contribute just a little bit to the betterment of the world.
-
-So what does Wahlkampf feel like?
-
-It's Wednesday, 4th October 8:44pm. You listen to Southern Gothic and are at the beginning of yet another epic journey.
-Create an awesome final website for the election campaign. A live coverage of the last 36 hours of the top candidate
-of your party.
-
-1. Stationen
-2. Challenges
-2a. Forms
-2b. Workflows
-3. Zugticket
-4. Live-Videos
-5. Hashtagstream
-6. Styling
-7. Heatmap - https://developers.google.com/maps/documentation/javascript/heatmaplayer
-
-
--->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Simple Map</title>
     <meta name="viewport" content="initial-scale=1.0">
+    <meta http-equiv="refresh" content="300">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="stylesheet.css">
+    {{ standard_header_includes }}
     <script src="https://code.jquery.com/jquery-latest.min.js"
             type="text/javascript"></script>
     <style>
@@ -45,6 +17,48 @@ of your party.
         }
         .map-box {
             width: 200px;
+        }
+
+        #map-container {
+            height: 100%;
+            /* overflow: hidden; */
+        }
+
+        #map {
+            height: 100%;
+        }
+
+        #countdown-overlay {
+            position:absolute;
+            display:table;
+            top:0px;
+            left:0px;
+            z-index:99;
+            background-color:rgba(255,255,255,0.5);
+            opacity: 0.7;
+            width:100%;
+            height:100%;
+        }
+
+        #countdown-overlay .overlay-middle {
+            vertical-align:middle;
+            display:table-cell;
+        }
+
+        @media (max-width: 768px){
+            #map-container {
+                height: auto;
+            }
+
+            #map {
+                height: 76vh;
+            }
+
+            #countdown-overlay {
+                position: static;
+                height: auto;
+                opacity: 1.0;
+            }
         }
     </style>
 </head>
@@ -91,7 +105,8 @@ $(function(){
 });
 
 
-    var imagePathPrefix = "";
+    //var imagePathPrefix = "";
+    var imagePathPrefix = "https://ichtuwas.neos.eu/hubfs/Kampagnen/NRW17/Wahltour%2036Neos/assets/";
     var imagePathBubble = imagePathPrefix + "bubble32px.png";
     var imagePathStrolz = imagePathPrefix + "strolz.png";
     var imagePathGriss = imagePathPrefix + "griss.png";
@@ -127,45 +142,6 @@ $(function(){
 
     var map;
     function initMap() {
-
-        var markerArray = [];
-
-        var imageStrolz = {
-            url: imagePathStrolz,
-            anchor: new google.maps.Point(2,15)
-        };
-
-        var imageGriss = {
-            url: imagePathGriss,
-            anchor: new google.maps.Point(2,15)
-        };
-
-        var imageGrissStrolz = {
-            url: imagePathGrissStrolz,
-            anchor: new google.maps.Point(44,15)
-        };
-
-
-        var imageBubble = {
-            url: imagePathBubble,
-            anchor: new google.maps.Point(2,29)
-        };
-
-        var imageFlag = {
-            url: imagePathFlag,
-            anchor: new google.maps.Point(4,32)
-        };
-
-        var imageFlagChallenge = {
-            url: imagePathFlagChallenge,
-            anchor: new google.maps.Point(6,40)
-        };
-
-        var imageFlagGoal = {
-            url: imagePathFlagGoal,
-            anchor: new google.maps.Point(6,48)
-        };
-
 
         map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: 47.6746209, lng: 13.5},
@@ -698,9 +674,47 @@ $(function(){
             }
         });/**/
 
-        //                                                                                                              POIS
+        //                                                                                                              SETUP: IMAGES
+
+        var markerArray = [];
+
+        var imageStrolz = {
+            url: imagePathStrolz,
+            anchor: new google.maps.Point(2,15)
+        };
+
+        var imageGriss = {
+            url: imagePathGriss,
+            anchor: new google.maps.Point(2,15)
+        };
+
+        var imageGrissStrolz = {
+            url: imagePathGrissStrolz,
+            anchor: new google.maps.Point(44,15)
+        };
 
 
+        var imageBubble = {
+            url: imagePathBubble,
+            anchor: new google.maps.Point(2,29)
+        };
+
+        var imageFlag = {
+            url: imagePathFlag,
+            anchor: new google.maps.Point(4,32)
+        };
+
+        var imageFlagChallenge = {
+            url: imagePathFlagChallenge,
+            anchor: new google.maps.Point(6,40)
+        };
+
+        var imageFlagGoal = {
+            url: imagePathFlagGoal,
+            anchor: new google.maps.Point(6,48)
+        };
+
+        //                                                                                                              SETUP: POSITIONS
         var position_bregenz = { // Challenge
             position: {lat: 47.50075, lng: 9.74231},
             title: "Bregenz",
@@ -733,7 +747,7 @@ $(function(){
             position: {lat: 48.30694, lng: 14.285830000000033},
             title: "Linz",
             date: "Samstag, 10:00 - 12:01 Uhr",
-            description: 'Matthias Strolz und Irmgard Griss machen einen Zwischenstopp in Linz. Für Mat muss seine dritte Chancen-Challenge bestehen. Danach geht es mit der Bahn weiter nach Wien. Du willst dabei sein? Reserviere dir hier dein Ticket: <a href="">Ticket anmelden</a>'
+            description: 'Matthias Strolz und Irmgard Griss machen einen Zwischenstopp in Linz. Mat muss seine dritte Chancen-Challenge bestehen. Danach geht es mit der Bahn weiter nach Wien. Du willst dabei sein? Reserviere dir hier dein Ticket: <a href="">Ticket anmelden</a>'
             , image: imageFlagChallenge
         };
         var position_stpoelten = {
@@ -756,7 +770,7 @@ $(function(){
         var infowindow;
 
         var markers = [];
-        // Marker erstellen und Logik für Infowindow
+        //  Create markers and add logic for info window
         for(var i = 0; i < positions.length; i++){
             var marker= new google.maps.Marker({
                 position: positions[i].position,
@@ -847,6 +861,7 @@ $(function(){
             lines.push(line);
         } //end of for loop
         // alert(lines.length);
+
 
         var animate = function() {
             var count = 0;
@@ -1233,5 +1248,6 @@ $(function(){
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBa-LkwNN3X8Iz9DR948QSa1k1qNzWtYS8&callback=initMap"
         async defer></script>
+{{ standard_footer_includes }}
 </body>
 </html>
