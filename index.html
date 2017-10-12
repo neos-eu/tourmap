@@ -15,9 +15,6 @@
             margin: 0;
             padding: 0;
         }
-        .map-box {
-            width: 200px;
-        }
 
         #map-container {
             height: 100%;
@@ -84,6 +81,23 @@
                 -webkit-transform: scale(0.8);
             }
         }
+
+        .map-box {
+            width: 200px;
+        }
+
+        .map-box h2 {
+            margin: 0;
+        }
+
+        .map-box-date {
+            font-weight: 700;
+        }
+
+        .map-box-description {
+            margin-top: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -812,9 +826,9 @@ $(function(){
             });
 
             var html =
-                    '<div class="map-box"><h1>' + positions[i].title + '</h1>' +
-                    '<div style="map-box-date">' + positions[i].date + "</div>" +
-                    '<div style="map-box-description">' + positions[i].description + "</div>";
+                    '<div class="map-box"><h2>' + positions[i].title + '</h2>' +
+                    '<div class="map-box-date">' + positions[i].date + "</div>" +
+                    '<div class="map-box-description">' + positions[i].description + "</div>";
 
             marker.content = html;
 
