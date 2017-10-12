@@ -152,12 +152,13 @@ $(function(){
     var imagePathFlag = imagePathPrefix + "flag1.png";
     var imagePathFlagChallenge = imagePathPrefix + "flag2.png";
     var imagePathFlagGoal = imagePathPrefix + "flag3.png";
+    var imagePathInfo = imagePathPrefix + "info.png";
 
     var simulateTour = true;
     var simulationStartRealTime = new Date();
-    var simulatedTourStartDate = new Date(2017,9,13,8,0,0,0);
+    var simulatedTourStartDate = new Date(2017,9,12,17,0,0,0);
     var simulatedTourEndDate = new Date(2017,9,14,20,0,0,0);
-    const simulationTimeMultiplier = 60 * 5 * 1;
+    const simulationTimeMultiplier = 60 * 60 * 1;
 
 
     function getNow(){
@@ -752,6 +753,10 @@ $(function(){
             anchor: new google.maps.Point(6,48)
         };
 
+        var imageInfo = {
+            url: imagePathInfo
+        };
+
         //                                                                                                              SETUP: POSITIONS
         var position_bregenz = { // Challenge
             position: {lat: 47.50075, lng: 9.74231},
@@ -803,7 +808,27 @@ $(function(){
             , image: imageFlagGoal
         };
 
-        var positions = [position_bregenz, position_salzburg, position_graz, position_stpoelten, position_innsbruck, position_linz, position_wien];
+        var infoLivestream1 = {
+            position: {
+                lat: position_bregenz.position.lat * 0.4 + position_innsbruck.position.lat * 0.6,
+                lng: position_bregenz.position.lng * 0.4 + position_innsbruck.position.lng * 0.6
+            },
+            title: "Erster Livestream",
+            date: "Freitag, 11:00 Uhr",
+            description: "Mat war live: Link",
+            image: imageInfo
+        };
+
+        var positions = [
+            position_bregenz,
+            position_salzburg,
+            position_graz,
+            position_stpoelten,
+            position_innsbruck,
+            position_linz,
+            position_wien,
+            infoLivestream1
+        ];
 
         var infowindow;
 
@@ -918,15 +943,20 @@ $(function(){
         //                                                                                                              TOUR
 
         // Griss
-        var dateGrissStart = new Date(2017,9,10,10,45,0,0);
-        dateGrissStart.setUTCDate(13);
-        dateGrissStart.setUTCHours(4);
-        dateGrissStart.setUTCMinutes(0);
+        var dateStart = new Date(2017,9,10,10,45,0,0);
+        dateStart.setUTCDate(11);
+        dateStart.setUTCHours(4);
+        dateStart.setUTCMinutes(0);
 
-        var dateTransferKlagenfurtGrazStart = new Date(2017,9,10,10,45,0,0);
-        dateTransferKlagenfurtGrazStart.setUTCDate(13);
-        dateTransferKlagenfurtGrazStart.setUTCHours(6);
-        dateTransferKlagenfurtGrazStart.setUTCMinutes(0);
+        var dateTransferWienGrazStart = new Date(2017,9,10,10,45,0,0);
+        dateTransferWienGrazStart.setUTCDate(12);
+        dateTransferWienGrazStart.setUTCHours(17);
+        dateTransferWienGrazStart.setUTCMinutes(0);
+
+        var dateTransferWienGrazEnd = new Date(2017,9,10,10,45,0,0);
+        dateTransferWienGrazEnd.setUTCDate(12);
+        dateTransferWienGrazEnd.setUTCHours(21);
+        dateTransferWienGrazEnd.setUTCMinutes(0);
 
         var dateTransferGrazSalzburgStart = new Date(2017,9,10,10,45,0,0);
         dateTransferGrazSalzburgStart.setUTCDate(13);
@@ -939,10 +969,15 @@ $(function(){
         dateTransferGrazSalzburgEnd.setUTCMinutes(44);
 
         //Strolz
-        var dateStrolzStart = new Date(2017,9,10,13,45,0,0);
-        dateStrolzStart.setUTCDate(13);
-        dateStrolzStart.setUTCHours(4);
-        dateStrolzStart.setUTCMinutes(0);
+        var dateTransferWienBregenzStart = new Date(2017,9,10,10,45,0,0);
+        dateTransferWienBregenzStart.setUTCDate(12);
+        dateTransferWienBregenzStart.setUTCHours(20);
+        dateTransferWienBregenzStart.setUTCMinutes(15);
+
+        var dateTransferWienBregenzEnd = new Date(2017,9,10,10,45,0,0);
+        dateTransferWienBregenzEnd.setUTCDate(13);
+        dateTransferWienBregenzEnd.setUTCHours(7);
+        dateTransferWienBregenzEnd.setUTCMinutes(30);
 
         var dateTransferBregenzInnsbruckStart = new Date(2017,9,10,13,45,0,0);
         dateTransferBregenzInnsbruckStart.setUTCDate(13);
@@ -1029,11 +1064,27 @@ $(function(){
         var tourRoutes = [
 
                 ////////////////////////////////////////////// GRISS
-                // Griss startet in Graz
+            // Griss startet in Wien
+            {
+                marker: markerGrissStrolz,
+                startPosition: position_wien.position,
+                startDate: dateStart,
+                endPosition: position_wien.position,
+                endDate: dateTransferWienGrazStart
+            },
+            // Griss: Wien nach Graz
+            {
+                marker: markerGriss,
+                startPosition: position_wien.position,
+                startDate: dateTransferWienGrazStart,
+                endPosition: position_graz.position,
+                endDate: dateTransferWienGrazEnd
+            },
+            // Griss: Graz
             {
                 marker: markerGriss,
                 startPosition: position_graz.position,
-                startDate: dateGrissStart,
+                startDate: dateTransferWienGrazEnd,
                 endPosition: position_graz.position,
                 endDate: dateTransferGrazSalzburgStart
             },
@@ -1054,11 +1105,27 @@ $(function(){
                 endDate: dateTransferInnsbruckSalzburgEnd
             },
                 ////////////////////////////////////////////// STROLZ
-                //Strolz startet in Bregenz
+                //Strolz startet in Wien
+            {
+                marker: markerStrolz,
+                startPosition: position_wien.position,
+                startDate: dateTransferWienGrazStart,
+                endPosition: position_wien.position,
+                endDate: dateTransferBregenzInnsbruckStart
+            },
+                //Strolz: Wien nach Begrenz
+            {
+                marker: markerStrolz,
+                startPosition: position_wien.position,
+                startDate: dateTransferWienBregenzStart,
+                endPosition: position_bregenz.position,
+                endDate: dateTransferWienBregenzEnd
+            },
+                //Strolz: Bregenz
             {
                 marker: markerStrolz,
                 startPosition: position_bregenz.position,
-                startDate: dateStrolzStart,
+                startDate: dateTransferWienBregenzEnd,
                 endPosition: position_bregenz.position,
                 endDate: dateTransferBregenzInnsbruckStart
             },
