@@ -14,6 +14,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            font-family: "Open Sans";
         }
 
         #map-container {
@@ -32,7 +33,7 @@
             left:0px;
             z-index:99;
             background-color:rgba(255,255,255,0.5);
-            opacity: 0.7;
+
             width:100%;
             height:100%;
         }
@@ -55,6 +56,29 @@
                 position: static;
                 height: auto;
                 opacity: 1.0;
+            }
+        }
+
+        .tourmap-form {
+            background-color: #444;
+            color: white !important;
+            padding: 20px;
+        }
+
+        #countdown-overlay h2 {
+            font-size:72pt;
+            font-family: 'montserrat', Verdana;
+            font-weight: 700;
+            color: #e84188;
+            margin: 0;
+
+        }
+
+        @media (min-width: 768px){
+            .overlay-middle div p {
+                width:500px;
+                margin: 0 auto;
+                font-size:16pt;
             }
         }
 
@@ -114,33 +138,8 @@
 </div>
 <div id="debug-output"></div>
 <script>
-function formatted_number(number){
-    return ("0" + number).slice(-2);
-}
 
-$(function(){
-    var calcNewYear = setInterval(function(){
 
-        date_target = new Date(); //new Date(2017 , 0, 30);
-        date_target.setUTCFullYear(2017);
-        date_target.setUTCMonth(9);
-        date_target.setUTCDate(12);
-        date_target.setUTCHours(20);
-        date_target.setUTCMinutes(30);
-        date_target.setUTCSeconds(0);
-        date_now = new Date();
-        diff_in_milliseconds = date_target - date_now;
-        seconds = Math.floor(diff_in_milliseconds/1000);
-        minutes = Math.floor(seconds/60);
-        hours = Math.floor(minutes/60);
-        days = Math.floor(hours/24);
-        hours = hours - (days*24);
-        minutes = minutes - days*24*60 - hours*60;
-        seconds = seconds - days*24*60*60 - hours*60*60 - minutes*60;
-
-        $("#countdown").html("<h1 style=\"font-size:72pt\">" + days + ":" + formatted_number(hours) + ":" + formatted_number(minutes) + ":" + formatted_number(seconds) + "</h1>");
-    },1000);
-});
 
 
     //var imagePathPrefix = "";
@@ -154,11 +153,17 @@ $(function(){
     var imagePathFlagGoal = imagePathPrefix + "flag3.png";
     var imagePathInfo = imagePathPrefix + "info.png";
 
-    var simulateTour = true;
+    var simulateTour = false;
     var simulationStartRealTime = new Date();
-    var simulatedTourStartDate = new Date(2017,9,12,17,0,0,0);
+    var simulatedTourStartDate = new Date(2017,9,12,1,0,0,0);
     var simulatedTourEndDate = new Date(2017,9,14,20,0,0,0);
-    const simulationTimeMultiplier = 60 * 60 * 1;
+    const simulationTimeMultiplier = 60 * 5 * 1;
+
+
+    var updateInterval = 1000;
+    if(simulateTour){
+        updateInterval = 1000;
+    }
 
 
     function getNow(){
@@ -1268,10 +1273,6 @@ $(function(){
             }, wait);
         };
 
-        var updateInterval = 1000;
-        if(simulateTour){
-            updateInterval = 20;
-        }
         // begin animation, send back to origin after completion
         updateTravelPositions(updateInterval);
 
@@ -1369,6 +1370,42 @@ $(function(){
 
          */
     }
+
+    //                                                                                                                  COUNTDOWN
+
+    function formatted_number(number){
+        return ("0" + number).slice(-2);
+    }
+
+    $(function(){
+        setInterval(function(){
+
+            date_target = new Date(); //new Date(2017 , 0, 30);
+            date_target.setUTCFullYear(2017);
+            date_target.setUTCMonth(9);
+            date_target.setUTCDate(12);
+            date_target.setUTCHours(20);
+            date_target.setUTCMinutes(15);
+            date_target.setUTCSeconds(0);
+            date_now = getNow();
+            diff_in_milliseconds = date_target - date_now;
+            seconds = Math.floor(diff_in_milliseconds/1000);
+            minutes = Math.floor(seconds/60);
+            hours = Math.floor(minutes/60);
+            days = Math.floor(hours/24);
+            hours = hours - (days*24);
+            minutes = minutes - days*24*60 - hours*60;
+            seconds = seconds - days*24*60*60 - hours*60*60 - minutes*60;
+
+            if(date_now < date_target){
+                $("#countdown").html("<h2>" + days + ":" + formatted_number(hours) + ":" + formatted_number(minutes) + ":" + formatted_number(seconds) + "</h2>");
+                $("#countdown-overlay").css("display", "table");
+            }
+            else {
+                $("#countdown-overlay").css("display", "none");
+            }
+        },updateInterval);
+    });
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBa-LkwNN3X8Iz9DR948QSa1k1qNzWtYS8&callback=initMap"
         async defer></script>
