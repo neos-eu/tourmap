@@ -819,6 +819,18 @@ $(function(){
             image: imageInfo
         };
 
+        var poi1 = {
+            position: {
+                lat: position_graz.position.lat * 0.4 + position_innsbruck.position.lat * 0.6,
+                lng: position_graz.position.lng * 0.4 + position_innsbruck.position.lng * 0.6
+            },
+            title: "Erster Livestream",
+            date: "Freitag, 11:00 Uhr",
+            description: "Mat war live: Link",
+            image: imageBubble
+        };
+
+
         var positions = [
             position_bregenz,
             position_salzburg,
@@ -827,7 +839,8 @@ $(function(){
             position_innsbruck,
             position_linz,
             position_wien,
-            infoLivestream1
+            infoLivestream1,
+            poi1
         ];
 
         var infowindow;
