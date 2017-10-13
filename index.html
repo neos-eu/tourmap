@@ -5,6 +5,7 @@
     <meta name="viewport" content="initial-scale=1.0">
     <meta http-equiv="refresh" content="300">
     <meta charset="utf-8">
+    <meta property="og:image" content="https://ichtuwas.neos.eu/hubfs/Kampagnen/NRW17/Wahltour%2036Neos/assets/preview.png" />
     {{ standard_header_includes }}
     <script src="https://code.jquery.com/jquery-latest.min.js"
             type="text/javascript"></script>
@@ -43,6 +44,18 @@
             display:table-cell;
         }
 
+        #countdown-overlay h2 {
+            font-size:72pt;
+            font-family: 'montserrat', Verdana;
+            font-weight: 700;
+            color: #e84188;
+            margin: 0;
+        }
+
+        .overlay-inner {
+            text-align:center;
+        }
+
         @media (max-width: 768px){
             #map-container {
                 height: auto;
@@ -57,21 +70,14 @@
                 height: auto;
                 opacity: 1.0;
             }
-        }
 
-        .tourmap-form {
-            background-color: #444;
-            color: white !important;
-            padding: 20px;
-        }
+            #countdown-overlay h2 {
+                font-size: 36pt;
+            }
 
-        #countdown-overlay h2 {
-            font-size:72pt;
-            font-family: 'montserrat', Verdana;
-            font-weight: 700;
-            color: #e84188;
-            margin: 0;
-
+            .overlay-inner p {
+                margin: 0 10px;
+            }
         }
 
         @media (min-width: 768px){
@@ -129,7 +135,7 @@
     <div id="map"></div>
     <div id="countdown-overlay" style="display:none">
         <div class="overlay-middle">
-            <div style="text-align:center;">
+            <div class="overlay-inner">
                 <div id="countdown"></div>
                 <p>Der längste Wahlabschluss Österreichs. Sei live dabei, wenn Matthias Strolz und Irmgard Griss ab Donnerstag Abend 36 Stunden lang auf Tour gehen und Menschen in ganz Österreich treffen.</p
             </div>
@@ -153,16 +159,16 @@
     var imagePathFlagGoal = imagePathPrefix + "flag3.png";
     var imagePathInfo = imagePathPrefix + "info.png";
 
-    var simulateTour = false;
+    var simulateTour = true;
     var simulationStartRealTime = new Date();
     var simulatedTourStartDate = new Date(2017,9,12,1,0,0,0);
     var simulatedTourEndDate = new Date(2017,9,14,20,0,0,0);
-    const simulationTimeMultiplier = 60 * 5 * 1;
+    const simulationTimeMultiplier = 60 * 60 * 3;
 
 
     var updateInterval = 1000;
     if(simulateTour){
-        updateInterval = 1000;
+        updateInterval = 20;
     }
 
 
@@ -220,48 +226,48 @@
                 from: '11fryZLw__OBjsjF8itWw-ZQimwcCzuhLKcaaozfP'
             },
             styles: [{
-                    polygonOptions: {
-                        fillColor: "#ffffff",
-                        fillOpacity: 0.2,
-                        strokeColor: "#ffffff",
-                        strokeOpacity: 0.2,
-                        strokeWeight: 6
-                    }
+                polygonOptions: {
+                    fillColor: "#ffffff",
+                    fillOpacity: 0.2,
+                    strokeColor: "#ffffff",
+                    strokeOpacity: 0.2,
+                    strokeWeight: 6
                 }
+            }
             ],
             map: map,
             suppressInfoWindows: true
         });
 
         //                                                                                                              CONTROLS
-/*
-        // Create a div to hold the control.
-        var controlDiv = document.createElement('div');
+        /*
+         // Create a div to hold the control.
+         var controlDiv = document.createElement('div');
 
-        var controlUI = document.createElement('div');
-        controlUI.style.backgroundColor = '#fff';
-        controlUI.style.border = '2px solid #fff';
-        controlUI.style.cursor = 'pointer';
-        controlUI.style.marginBottom = '22px';
-        controlUI.style.textAlign = 'center';
-        controlUI.style.height = "100vh";
-        controlUI.title = 'Click to recenter the map';
-        controlDiv.appendChild(controlUI);
+         var controlUI = document.createElement('div');
+         controlUI.style.backgroundColor = '#fff';
+         controlUI.style.border = '2px solid #fff';
+         controlUI.style.cursor = 'pointer';
+         controlUI.style.marginBottom = '22px';
+         controlUI.style.textAlign = 'center';
+         controlUI.style.height = "100vh";
+         controlUI.title = 'Click to recenter the map';
+         controlDiv.appendChild(controlUI);
 
-        var controlText = document.createElement('div');
-        controlText.style.color = 'rgb(25,25,25)';
-        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-        controlText.style.fontSize = '16px';
-        controlText.style.lineHeight = '38px';
-        controlText.style.paddingLeft = '5px';
-        controlText.style.paddingRight = '5px';
-        controlText.innerHTML = 'Center Map wooop woop foooo';
-        controlUI.appendChild(controlText);
+         var controlText = document.createElement('div');
+         controlText.style.color = 'rgb(25,25,25)';
+         controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+         controlText.style.fontSize = '16px';
+         controlText.style.lineHeight = '38px';
+         controlText.style.paddingLeft = '5px';
+         controlText.style.paddingRight = '5px';
+         controlText.innerHTML = 'Center Map wooop woop foooo';
+         controlUI.appendChild(controlText);
 
-        controlDiv.index = 1;
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlDiv);
+         controlDiv.index = 1;
+         map.controls[google.maps.ControlPosition.TOP_LEFT].push(controlDiv);
 
-        /**/
+         /**/
 
         //                                                                                                              STYLES
         var styles = [
@@ -700,23 +706,23 @@
         map.setOptions({styles: styles});
 
         //                                                                                                              GEOCODING
-/*
-        var geocoder = new google.maps.Geocoder();
-        var address = "Bregenz";
-        geocoder.geocode({'address': address}, function(results, status) {
-            if (status === 'OK') {
-                var foo = results[0].geometry.location;
-                var lat = foo.lat();
-                var lng = foo.lng();
-                resultsMap.setCenter(foo);
-                var marker = new google.maps.Marker({
-                    map: resultsMap,
-                    position: results[0].geometry.location
-                });
-            } else {
-                alert('Geocode was not successful for the following reason: ' + status);
-            }
-        });/**/
+        /*
+         var geocoder = new google.maps.Geocoder();
+         var address = "Bregenz";
+         geocoder.geocode({'address': address}, function(results, status) {
+         if (status === 'OK') {
+         var foo = results[0].geometry.location;
+         var lat = foo.lat();
+         var lng = foo.lng();
+         resultsMap.setCenter(foo);
+         var marker = new google.maps.Marker({
+         map: resultsMap,
+         position: results[0].geometry.location
+         });
+         } else {
+         alert('Geocode was not successful for the following reason: ' + status);
+         }
+         });/**/
 
         //                                                                                                              SETUP: IMAGES
 
@@ -844,8 +850,8 @@
             position_innsbruck,
             position_linz,
             position_wien,
-            infoLivestream1,
-            poi1
+            //infoLivestream1,
+            //poi1
         ];
 
         var infowindow;
@@ -1081,7 +1087,7 @@
 
         var tourRoutes = [
 
-                ////////////////////////////////////////////// GRISS
+            ////////////////////////////////////////////// GRISS
             // Griss startet in Wien
             {
                 marker: markerGrissStrolz,
@@ -1106,7 +1112,7 @@
                 endPosition: position_graz.position,
                 endDate: dateTransferGrazSalzburgStart
             },
-                // Griss: Graz nach Salzburg
+            // Griss: Graz nach Salzburg
             {
                 marker: markerGriss,
                 startPosition: position_graz.position,
@@ -1114,7 +1120,7 @@
                 endPosition: position_salzburg.position,
                 endDate: dateTransferGrazSalzburgEnd
             },
-                // Griss in Salzburg bis Strolz eintrifft
+            // Griss in Salzburg bis Strolz eintrifft
             {
                 marker: markerGriss,
                 startPosition: position_salzburg.position,
@@ -1122,8 +1128,8 @@
                 endPosition: position_salzburg.position,
                 endDate: dateTransferInnsbruckSalzburgEnd
             },
-                ////////////////////////////////////////////// STROLZ
-                //Strolz startet in Wien
+            ////////////////////////////////////////////// STROLZ
+            //Strolz startet in Wien
             {
                 marker: markerStrolz,
                 startPosition: position_wien.position,
@@ -1131,7 +1137,7 @@
                 endPosition: position_wien.position,
                 endDate: dateTransferBregenzInnsbruckStart
             },
-                //Strolz: Wien nach Begrenz
+            //Strolz: Wien nach Begrenz
             {
                 marker: markerStrolz,
                 startPosition: position_wien.position,
@@ -1139,7 +1145,7 @@
                 endPosition: position_bregenz.position,
                 endDate: dateTransferWienBregenzEnd
             },
-                //Strolz: Bregenz
+            //Strolz: Bregenz
             {
                 marker: markerStrolz,
                 startPosition: position_bregenz.position,
@@ -1147,7 +1153,7 @@
                 endPosition: position_bregenz.position,
                 endDate: dateTransferBregenzInnsbruckStart
             },
-                // Strolz: Bregenz nach Innsbruck
+            // Strolz: Bregenz nach Innsbruck
             {
                 marker: markerStrolz,
                 startPosition: position_bregenz.position,
@@ -1155,7 +1161,7 @@
                 endPosition: position_innsbruck.position,
                 endDate: dateTransferBregenzInnsbruckEnd
             },
-                // Strolz: Innsbruck
+            // Strolz: Innsbruck
             {
                 marker: markerStrolz,
                 startPosition: position_innsbruck.position,
@@ -1163,7 +1169,7 @@
                 endPosition: position_innsbruck.position,
                 endDate: dateTransferInnsbruckSalzburgStart
             },
-                // Strolz: Innsbruck nach Salzburg
+            // Strolz: Innsbruck nach Salzburg
             {
                 marker: markerStrolz,
                 startPosition: position_innsbruck.position,
@@ -1171,8 +1177,8 @@
                 endPosition: position_salzburg.position,
                 endDate: dateTransferInnsbruckSalzburgEnd
             },
-                ////////////////////////////////////////////// BEIDE
-                // Beide: Start in Salzburg
+            ////////////////////////////////////////////// BEIDE
+            // Beide: Start in Salzburg
             {
                 marker: markerGrissStrolz,
                 startPosition: position_salzburg.position,
@@ -1180,7 +1186,7 @@
                 endPosition: position_salzburg.position,
                 endDate: dateTransferSalzburgLinzStart
             },
-                // Beide: Salzburg nach Linz
+            // Beide: Salzburg nach Linz
             {
                 marker: markerGrissStrolz,
                 startPosition: position_salzburg.position,
@@ -1188,7 +1194,7 @@
                 endPosition: position_linz.position,
                 endDate: dateTransferSalzburgLinzEnd
             },
-                // Beide: Linz
+            // Beide: Linz
             {
                 marker: markerGrissStrolz,
                 startPosition: position_linz.position,
@@ -1196,7 +1202,7 @@
                 endPosition: position_linz.position,
                 endDate: dateTransferLinzStPoeltenStart
             },
-                // Beide: Linz nach St. Pölten
+            // Beide: Linz nach St. Pölten
             {
                 marker: markerGrissStrolz,
                 startPosition: position_linz.position,
@@ -1204,7 +1210,7 @@
                 endPosition: position_stpoelten.position,
                 endDate: dateTransferLinzStPoeltenEnd
             },
-                // Beide: St. Pölten
+            // Beide: St. Pölten
             {
                 marker: markerGrissStrolz,
                 startPosition: position_stpoelten.position,
@@ -1212,7 +1218,7 @@
                 endPosition: position_stpoelten.position,
                 endDate: dateTransferStPoeltenWienStart
             },
-                // Beide: St. Pölten nach Wien
+            // Beide: St. Pölten nach Wien
             {
                 marker: markerGrissStrolz,
                 startPosition: position_stpoelten.position,
@@ -1220,7 +1226,7 @@
                 endPosition: position_wien.position,
                 endDate: dateTransferStPoeltenWienEnd
             },
-                // Beide: Wien
+            // Beide: Wien
             {
                 marker: markerGrissStrolz,
                 startPosition: position_wien.position,
@@ -1242,7 +1248,9 @@
                 // store a LatLng for each step of the animation
                 var tourRoute = tourRoutes[i];
                 var now = getNow();
-                $("#debug-output").html(now);
+                if(simulateTour){
+                    $("#debug-output").html(now);
+                }
                 if(now > tourRoute.startDate && now < tourRoute.endDate){
 
                     if(tourRoute.marker.getMap() == null){
@@ -1276,7 +1284,7 @@
         // begin animation, send back to origin after completion
         updateTravelPositions(updateInterval);
 
-/**/
+        /**/
 
         //                                                                                                              Routing
         /*
